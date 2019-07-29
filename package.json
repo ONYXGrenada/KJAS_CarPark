@@ -1,0 +1,23 @@
+{
+  "name": "kjas_carpark",
+  "version": "1.0.0",
+  "description": "Car Park Management Application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ONYXGrenada/KJAS_CarPark.git"
+  },
+  "author": "Onyx IT",
+  "license": "GNU GPL V3",
+  "bugs": {
+    "url": "https://github.com/ONYXGrenada/KJAS_CarPark/issues"
+  },
+  "homepage": "https://github.com/ONYXGrenada/KJAS_CarPark#readme",
+  "dependencies": {
+    "electron": "^5.0.8"
+  }
+}
