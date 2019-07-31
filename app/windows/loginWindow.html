@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <title>Login</title>
+</head>
+<body>
+    <div class="container">
+        <br/>
+        <form>
+            <div class="form-group">
+                <label for="usr">User Name:</label>
+                <input type="text" class="form-control" id="txtUsr">
+            </div>
+            <div class="form-group">
+                <label for="pwd">Password:</label>
+                <input type="password" class="form-control" id="txtPwd">
+            </div>
+            <button class="btn btn-primary" id="btn-login" type="submit">Login</button>
+            <label id="lbl"></label>
+        </form>
+    </div>
+    <script src="../../src/js/loginWindow.js"></script>
+    <script>let $ = require('jquery');</script>
+    <script>require('popper.js');</script>
+    <script>require('bootstrap');</script>
+</body>
+</html>
