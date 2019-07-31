@@ -63,11 +63,9 @@ app.on('ready', () => {
 
     //Get login confirmation
     ipcMain.on('login:successful', (e, username) => {
-    createMainWindow()
-    mainWindow.send('login', username)
-    loginWindow.close(); 
-    // Still have a reference to addWindow in memory. Need to reclaim memory (Grabage collection)
-    //addWindow = null;
+        createMainWindow()
+        mainWindow.send('login', username)
+        loginWindow.close(); 
     });
 })
 
