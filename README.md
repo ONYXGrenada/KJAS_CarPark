@@ -12,6 +12,11 @@ git clone https://github.com/ONYXGrenada/KJAS_CarPark.git
 ```bash
 cd KJAS_CarPark
 npm install --save electron
+npm install --save sqlite3
+npm install --save jquery
+npm install --save popper.js
+npm install --save bootstrap
+npm postinstall
 ```
 
 ## Start Application
