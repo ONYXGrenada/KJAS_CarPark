@@ -7,6 +7,31 @@
     <title>Dashboard</title>
 </head>
 <body>
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading font-weight-bold">Car Park System</h1>
+            <p class="lead"></p>
+        </div>
+    </section>
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <h4 class="font-weight-normal">Daily Customers</h4>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-info btn-block" id="btnCheckIn">Check In</button>
+                        <button class="btn btn-success btn-block" id="btnCheckOut">Check Out</button>
+                        <button class="btn btn-danger btn-block" id="btnLostTicket">Lost Ticket</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+            </div>
+        </div>
+    </div>
     <script>let $ = require('jquery');</script>
     <script>require('popper.js');</script>
     <script>require('bootstrap');</script>

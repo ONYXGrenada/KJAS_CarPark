@@ -7,19 +7,17 @@
     <title>Login</title>
 </head>
 <body>
-    <div class="container">
+    <div class="container text-center">
         <br/>
-        <form>
-            <div class="form-group">
-                <label for="usr">User Name:</label>
-                <input type="text" class="form-control" id="txtUsr">
+        <form class="form-signin">
+            <h1 class="h1 font-weight-normal">Sign In</h1>
+            <label for="txtUser" class="sr-only">username</label>
+            <input type="text" class="form-control" id="txtUser" placeholder="Username" required autofocus>
+            <label for="txtPassword" class="sr-only">password</label>
+            <input type="password" class="form-control" id="txtPassword" placeholder="Password" required>
+            <div>
             </div>
-            <div class="form-group">
-                <label for="pwd">Password:</label>
-                <input type="password" class="form-control" id="txtPwd">
-            </div>
-            <button class="btn btn-primary" id="btn-login" type="submit">Login</button>
-            <label id="lbl"></label>
+            <button class="btn btn-lg btn-primary btn-block mt-3" id="btnLogin" type="submit">Sign in</button>
         </form>
     </div>
     <script src="../../app/js/loginWindow.js"></script>

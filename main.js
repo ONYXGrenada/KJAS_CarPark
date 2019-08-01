@@ -50,7 +50,7 @@ function createLoginWindow() {
         protocol: 'file:',
         slashes: true
     }));
-    loginWindow.toggleDevTools()
+    //loginWindow.toggleDevTools()
     //Quit app when login window closed
     loginWindow.on('closed', ()=>{
         loginWindow = null;
@@ -92,7 +92,7 @@ const mainMenuTemplate = [
 ];
 
 // Add developer tools option if in dev
-if(process.env.NODE_ENV !== 'production'){
+if (process.env.NODE_ENV !== 'production') {
     mainMenuTemplate.push({
         label: 'Developer Tools',
         submenu:[
@@ -104,7 +104,7 @@ if(process.env.NODE_ENV !== 'production'){
                 accelerator:process.platform == 'darwin' ? 'Command+I' : 'Ctrl+I',
                 click(item, focusedWindow){
                     focusedWindow.toggleDevTools();
-            }
+                }
             }
         ]
     });
