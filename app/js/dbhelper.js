@@ -16,13 +16,17 @@ function createUserTable() {
 }
 
 //Create Ticket Table
-function createTicketTable() {
-    
+function createSpecialTicketTable() {
+    console.log("Create database table for Special Tickets")
+    db.run(`CREATE TABLE IF NOT EXISTS tickets (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE,
+        password TEXT, salt TEXT, firstName TEXT, lastName TEXT, lastLogin DATE)`)
 }
 
 //Create Transaction Table
 function createTransactionTable() {
-
+    console.log("Create database table for Transaction")
+    db.run(`CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE,
+        password TEXT, salt TEXT, firstName TEXT, lastName TEXT, lastLogin DATE)`)
 }
 
 //Actually validate against database

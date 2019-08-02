@@ -16,7 +16,7 @@ npm install --save sqlite3
 npm install --save jquery
 npm install --save popper.js
 npm install --save bootstrap
-npm postinstall
+npm run postinstall
 ```
 
 ## Start Application
