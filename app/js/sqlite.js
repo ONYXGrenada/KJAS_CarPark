@@ -6,7 +6,8 @@ const db = new sqlite3.Database("./db/testdb.sqlite3", (err)=>{
         console.log('Error when creating the database', err)
     } else {
         console.log('Database created!')
-        createTable()
+        //createTable()
+        updateData()
     }
 
     /*db.exec('PRAGMA foreign_keys = ON;', (error)=>{
@@ -26,14 +27,19 @@ const createTable = () => {
 
 const insertData = () =>{
     console.log("Insert data")
-    db.run('INSERT INTO users (username, password, firstname, lastname) VALUES (?,?,?,?)', ["test","test","Test","User"]);
+    db.run('INSERT INTO users (username, password, firstName, lastName) VALUES (?,?,?,?)', ["test","test","Test","User"]);
+}
+
+const updateData = () =>{
+    console.log("Update data")
+    db.run('UPDATE users SET firstName = ?, lastName = ? WHERE username = ?', ["Test","User", "test"]);
 }
 
 read = () => {
     console.log("Read data from users");
     db.all("SELECT rowid AS id, username, password, firstname, lastname FROM users", (err, rows)=>{
         rows.forEach((row)=>{
-            console.log(row.id + ": " + row.username);
+            console.log(row.id + ": " + row.username + " : " + row.firstName + " : " + row.lastName);
         });
     });
 }

@@ -12,9 +12,9 @@ async function submitForm(e){
     const password = document.querySelector('#txtPassword').value
 
     console.log(username, password)
-    let auth = await dbhelper.login(username, password) 
-    console.log(auth)
-    console.log(auth.id)
-    if (auth.id) ipcRenderer.send('login:successful', auth.username)
+    let user = await dbhelper.login(username, password) 
+    console.log(user)
+    console.log(user.id)
+    if (user.id) ipcRenderer.send('login:successful', user)
     else ipcRenderer.send('login:failure')
 }

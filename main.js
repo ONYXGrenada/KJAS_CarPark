@@ -13,7 +13,8 @@ function createMainWindow() {
     mainWindow = new BrowserWindow({
         webPreferences: {
             nodeIntegration: true
-          }
+        },
+        show: false
     });
 
     mainWindow.loadURL(url.format({
@@ -21,6 +22,9 @@ function createMainWindow() {
         protocol: 'file:',
         slashes: true
     }));
+
+    //Open the DevTools
+    //mainWindow.webContents.openDevTools()
 
     mainWindow.on('closed', ()=>{
         app.quit();
@@ -41,7 +45,6 @@ function createLoginWindow() {
         webPreferences: {
             nodeIntegration: true
         }
-        //frame: false
     });
     loginWindow.setMenuBarVisibility(false)
     //Load html into window
@@ -51,21 +54,30 @@ function createLoginWindow() {
         slashes: true
     }));
     //loginWindow.toggleDevTools()
+
     //Quit app when login window closed
     loginWindow.on('closed', ()=>{
-        loginWindow = null;
+        //loginWindow = null
+        if (!mainWindow.isVisible()) {
+            app.quit()
+        } else {
+            loginWindow = null
+        }
     })
 }
 
 //Initialize application
 app.on('ready', () => {
+    //createLoginWindow()
+    createMainWindow()
     createLoginWindow()
 
     //Get login confirmation
-    ipcMain.on('login:successful', (e, username) => {
-        createMainWindow()
-        mainWindow.send('login', username)
-        loginWindow.close(); 
+    ipcMain.on('login:successful', (event, user) => {
+        mainWindow.show()
+        mainWindow.webContents.send('send:user', user)
+        //event.sender.send('send:username', username)
+        loginWindow.close()
     });
 })
 

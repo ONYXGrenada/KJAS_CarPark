@@ -32,7 +32,7 @@ function createTransactionTable() {
 //Actually validate against database
 function login(username, password){
     return new Promise((resolve, reject) => {
-        db.get('SELECT username, id FROM users WHERE username = ? AND password = ?', username, password, (err, row) => {
+        db.get('SELECT username, id, firstName, lastName FROM users WHERE username = ? AND password = ?', username, password, (err, row) => {
             if (err) {
                 reject("Error: " + err.message)
             } else {
