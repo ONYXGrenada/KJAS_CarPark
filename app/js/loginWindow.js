@@ -4,17 +4,24 @@ const dbhelper = require("../../app/js/dbhelper")
 //listen for login button click
 document.querySelector('form').addEventListener('submit', submitForm)
 
+let loginAttemptCount = 0
+
 //submit login request and respond to main.js
 async function submitForm(e){
-    console.log('this is a test')
     e.preventDefault()
+    //get username and password from window
     const username = document.querySelector('#txtUser').value
     const password = document.querySelector('#txtPassword').value
-
-    console.log(username, password)
+    //sqlite login
     let user = await dbhelper.login(username, password) 
-    console.log(user)
-    console.log(user.id)
-    if (user.id) ipcRenderer.send('login:successful', user)
-    else ipcRenderer.send('login:failure')
+    //check if login successful
+    if (user.id){
+        ipcRenderer.send('login:successful', user)
+    } 
+    else{
+        loginAttemptCount++
+        if (loginAttemptCount > 3) {
+            ipcRenderer.send('login:failure', close)
+        }
+    }
 }

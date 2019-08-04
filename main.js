@@ -26,7 +26,7 @@ function createMainWindow() {
     //Open the DevTools
     //mainWindow.webContents.openDevTools()
 
-    mainWindow.on('closed', ()=>{
+    mainWindow.on('closed', () => {
         app.quit();
     })
 
@@ -56,7 +56,7 @@ function createLoginWindow() {
     //loginWindow.toggleDevTools()
 
     //Quit app when login window closed
-    loginWindow.on('closed', ()=>{
+    loginWindow.on('closed', () => {
         //loginWindow = null
         if (!mainWindow.isVisible()) {
             app.quit()
@@ -78,6 +78,11 @@ app.on('ready', () => {
         mainWindow.webContents.send('send:user', user)
         //event.sender.send('send:username', username)
         loginWindow.close()
+    });
+
+    //Get failed login
+    ipcMain.on('login:failure', (event, close) => {
+        app.quit()
     });
 })
 
