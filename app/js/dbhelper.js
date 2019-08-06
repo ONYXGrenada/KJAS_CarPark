@@ -12,27 +12,41 @@ const db = new sqlite3.Database('./db/testdb.sqlite3', (err) => {
 function createUserTable() {
     console.log("Create database table for users")
     db.run(`CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE,
-        password TEXT, salt TEXT, firstName TEXT, lastName TEXT, lastLogin DATE)`, insertData)
+    password TEXT, salt TEXT, firstName TEXT, lastName TEXT, userType TEXT, lastLogin TEXT)`, insertAdminUser)
+}
+
+//Insert Admin User
+const insertAdminUser = () =>{
+    console.log("Insert the default Administrator User")
+    db.run('INSERT INTO users (username, password, firstName, lastName) VALUES (?,?,?,?)', ["admin","admin","Admin","User"]);
 }
 
 //Create Ticket Table
+function createTicketTable() {
+    console.log("Create database table for Tickets")
+    db.run(`CREATE TABLE IF NOT EXISTS tickets (ticketNumber INTEGER PRIMARY KEY AUTOINCREMENT, ticketType TEXT,
+    createdDate TEXT CURRENT_TIMESTAMP, closedDate TEXT, status TEXT, ticketCost REAL, username TEXT)`)
+}
+
+//Create Special Arrangement Ticket Table
 function createSpecialTicketTable() {
     console.log("Create database table for Special Tickets")
-    db.run(`CREATE TABLE IF NOT EXISTS tickets (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE,
-        password TEXT, salt TEXT, firstName TEXT, lastName TEXT, lastLogin DATE)`)
+    db.run(`CREATE TABLE IF NOT EXISTS specialTickets (id INTEGER PRIMARY KEY AUTOINCREMENT, ticketNumber TEXT,
+    ticketType TEXT, startDate TEXT, endDate TEXT, status TEXT, ticketCost REAL, username TEXT)`)
 }
 
 //Create Transaction Table
 function createTransactionTable() {
     console.log("Create database table for Transaction")
-    db.run(`CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE,
-        password TEXT, salt TEXT, firstName TEXT, lastName TEXT, lastLogin DATE)`)
+    db.run(`CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, ticketNumber INTEGER,
+    status TEXT, ticketCost REAL, amountPaid REAL, receiptNumber TEXT)`)
 }
 
-//Actually validate against database
-function login(username, password){
+//Login function to actually validate against database
+function login(username, password) {
     return new Promise((resolve, reject) => {
-        db.get('SELECT username, id, firstName, lastName FROM users WHERE username = ? AND password = ?', username, password, (err, row) => {
+        db.get('SELECT username, id, firstName, lastName FROM users WHERE username = ? AND password = ?', username,
+        password, (err, row) => {
             if (err) {
                 reject("Error: " + err.message)
             } else {
@@ -46,7 +60,29 @@ function login(username, password){
     })
 }
 
-//Create Ticket
+//Create Ticket function to generate ticket in the ticket table
+function createTicket(username) {
+    return new Promise((resolve, reject) => {
+        db.run('INSERT INTO tickets (status, username) VALUES (?,?)', ["open", username], (err) => {
+            if (err) {
+                reject("Error: " + err.message)
+            } else {
+                db.get('SELECT ticketNumber FROM tickets WHERE username = ? ORDER BY ticketNumber Desc', 
+                username, (err, row) => {
+                    if (err) {
+                        reject("Error: " + err.message)
+                    } else {
+                        if (row) {
+                            resolve(row)
+                        } else {
+                            resolve('Database Error')
+                        }
+                    }
+                })
+            }
+        })
+    })
+}
 
 // db.close((err) => {
 //     if (err) {
@@ -56,3 +92,4 @@ function login(username, password){
 // });
 
 module.exports.login = login
+module.exports.createTicket = createTicket
