@@ -25,21 +25,22 @@ const insertAdminUser = () =>{
 function createTicketTable() {
     console.log("Create database table for Tickets")
     db.run(`CREATE TABLE IF NOT EXISTS tickets (ticketNumber INTEGER PRIMARY KEY AUTOINCREMENT, ticketType TEXT,
-    createdDate TEXT CURRENT_TIMESTAMP, closedDate TEXT, status TEXT, ticketCost REAL, username TEXT)`)
+    createdDate DATETIME DEFAULT CURRENT_TIMESTAMP, closedDate DATETIME, status TEXT, ticketCost REAL, balance REAL,
+    username TEXT)`)
 }
 
 //Create Special Arrangement Ticket Table
 function createSpecialTicketTable() {
     console.log("Create database table for Special Tickets")
-    db.run(`CREATE TABLE IF NOT EXISTS specialTickets (id INTEGER PRIMARY KEY AUTOINCREMENT, ticketNumber TEXT,
-    ticketType TEXT, startDate TEXT, endDate TEXT, status TEXT, ticketCost REAL, username TEXT)`)
+    db.run(`CREATE TABLE IF NOT EXISTS specialTickets (id INTEGER PRIMARY KEY AUTOINCREMENT, vehicleRegistration TEXT,
+    ticketType TEXT, startDate DATETIME, endDate DATETIME, status TEXT, ticketCost REAL, balance REAL, username TEXT)`)
 }
 
 //Create Transaction Table
 function createTransactionTable() {
     console.log("Create database table for Transaction")
-    db.run(`CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, ticketNumber INTEGER,
-    status TEXT, ticketCost REAL, amountPaid REAL, receiptNumber TEXT)`)
+    db.run(`CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, ticketNumber TEXT,
+    status TEXT, tranDate DATETIME, ticketCost REAL, amountPaid REAL, balance REAL, receiptNumber TEXT)`)
 }
 
 //Login function to actually validate against database
@@ -52,6 +53,13 @@ function login(username, password) {
             } else {
                 if (row) {
                     resolve(row)
+                    let loginDateTime = new Date().toISOString().substr(0, 19).replace('T', ' ')
+                    db.run('UPDATE users SET lastLogin = ? WHERE username = ?', [loginDateTime, username],
+                    (err) => {
+                        if (err) {
+                            console.log('Error: ' + err.message)
+                        }
+                    })
                 } else {
                     resolve('username or password is incorrect')
                 }
