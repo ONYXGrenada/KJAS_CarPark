@@ -1,5 +1,5 @@
 const {ipcRenderer} = require('electron')
-const dbhelper = require("../../app/js/dbhelper")
+const dbhelper = require('../../app/js/dbhelper')
 
 //listen for login button click
 document.querySelector('form').addEventListener('submit', submitForm)

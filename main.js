@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu, ipcMain} = require('electron');
+const {app, BrowserWindow, Menu, ipcMain, dialog} = require('electron');
 const url = require('url');
 const path = require('path');
 
@@ -84,6 +84,39 @@ app.on('ready', () => {
     ipcMain.on('login:failure', (event, close) => {
         app.quit()
     });
+
+    //Ticket Message Box
+    ipcMain.on('send:ticket', (event, ticket) => {
+        const options = {
+            type: 'info',
+            title: 'Ticket',
+            message: 'Please check the printer for ticket# ' + ticket.ticketNumber,
+            buttons: ['Ok']
+        }
+        dialog.showMessageBox(null, options)
+    })
+
+    //Pay Ticket Message Box
+    ipcMain.on('send:pay', (event) => {
+        const options = {
+            type: 'info',
+            title: 'Pay Ticket',
+            message: 'Functionality not yet programmed!',
+            buttons: ['Ok']
+        }
+        dialog.showMessageBox(null, options)
+    })
+
+    //Pay Ticket Message Box
+    ipcMain.on('send:lost', (event) => {
+        const options = {
+            type: 'info',
+            title: 'Lost Ticket',
+            message: 'Functionality not yet programmed!',
+            buttons: ['Ok']
+        }
+        dialog.showMessageBox(null, options)
+    })
 })
 
 //Quit app when all windows are closed
