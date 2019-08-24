@@ -1,12 +1,14 @@
 const {app, BrowserWindow, Menu, ipcMain, dialog} = require('electron');
 const url = require('url');
 const path = require('path');
+const fs = require('fs');
 
 // SET ENV
 process.env.NODE_ENV = 'development';
 
 let mainWindow;
 let loginWindow;
+let printWindow;
 
 //Create mainWindow
 function createMainWindow() {
@@ -66,6 +68,47 @@ function createLoginWindow() {
     })
 }
 
+//Create printWindow
+function createPrintWindow(templateUrl) {
+    printWindow = new BrowserWindow({
+        parent: mainWindow,
+        width: 200,
+        height: 400,
+        webPreferences: {
+            nodeIntegration: true
+        },
+        show: false
+    });
+    printWindow.setMenuBarVisibility(false)
+    //Load html into window
+    printWindow.loadURL(url.format({
+        pathname: path.join(__dirname, templateUrl),
+        protocol: 'file:',
+        slashes: true
+    }));
+    //Print html file
+    printWindow.webContents.on('did-finish-load', () => {
+        //Print PDF Test
+        // printWindow.webContents.printToPDF({}, (error, data) => {
+        //     if (error) console.log(error.message)
+        //     fs.writeFileSync('app/tmp/print.pdf', data, (error) => {
+        //         if (error) {
+        //             console.log(error.message)
+        //         } else {
+        //             console.log('Write PDF successfully.')
+        //         }
+        //     })
+        // })
+        printWindow.webContents.print({
+            silent: false
+        })
+    })
+    //Clean up on close
+    printWindow.on('closed', () => {
+        printWindow = null
+    })
+}
+
 //Initialize application
 app.on('ready', () => {
     //createLoginWindow()
@@ -87,6 +130,7 @@ app.on('ready', () => {
 
     //Ticket Message Box
     ipcMain.on('send:ticket', (event, ticket) => {
+        createPrintWindow('app/templates/ticket.html')
         const options = {
             type: 'info',
             title: 'Ticket',

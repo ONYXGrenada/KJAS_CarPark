@@ -5,4 +5,7 @@ node_modules/
 #db/
 
 #Test JS Files
-app/js/sqlite.js
+#app/js/sqlite.js
+
+#Temporary Files
+app/tmp/

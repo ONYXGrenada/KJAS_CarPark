@@ -5,3 +5,7 @@
     width: 44mm;
     background: #FFF;
 }
+
+#company, #body{
+    border-bottom: 1px solid #EEE;
+}

@@ -3,21 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../app/css/ticket.css">
     <title>Ticket</title>
 </head>
 <body>
     <div class="container" id="ticket">
-        <div class="logo">
-            <h1 class="header">Ticket</h1>
+        <div class="logo"></div>
+        <div class="text-center" id="company">
+            <address>
+                <strong>Generic Company</strong>
+                address line 1 <br>
+                address line 2 <br>
+                <abbr title="Phone">P: </abbr>(473) 000-0000
+            </address>
         </div>
-        <div class="body">
-
+        <div class="" id="body">
+            <p id="ticketDetails">Ticket#: <br>
+                Date: <br>
+                Time In: <br>
+            </p>
+            <div id="barcode"></div>
         </div>
-        <div class="footer">
-            <p class="thankyou">Thank you for your business!</p>
+        <div class="" id="footer">
+            <p class="legal">
+                <small>
+                    <br>
+                    <strong>
+                        Thank you for your business! <br>
+                    </strong>
+                    The hourly rate is {rate} <br>
+                    Lost tickets will result in a full day charge of $18.00
+                </small>
+            </p>
         </div>
     </div>
-    
+    <script>let $ = require('jquery');</script>
+    <script>require('popper.js');</script>
+    <script>require('bootstrap');</script>
 </body>
 </html>
