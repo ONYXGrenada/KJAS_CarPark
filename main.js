@@ -1,7 +1,7 @@
 const {app, BrowserWindow, Menu, ipcMain, dialog} = require('electron');
 const url = require('url');
 const path = require('path');
-const fs = require('fs');
+//const fs = require('fs');
 
 // SET ENV
 process.env.NODE_ENV = 'development';
@@ -99,8 +99,15 @@ function createPrintWindow(templateUrl) {
         //         }
         //     })
         // })
+        //Print the contents of the HTML Template
         printWindow.webContents.print({
             silent: false
+        }, (success) => {
+            if (success) {
+                printWindow.close()
+            } else {
+                console.log(success.message)
+            }
         })
     })
     //Clean up on close
@@ -111,7 +118,6 @@ function createPrintWindow(templateUrl) {
 
 //Initialize application
 app.on('ready', () => {
-    //createLoginWindow()
     createMainWindow()
     createLoginWindow()
 
