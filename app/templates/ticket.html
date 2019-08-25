@@ -19,9 +19,9 @@
             </address>
         </div>
         <div class="" id="body">
-            <p id="ticketDetails">Ticket#: <br>
-                Date: <br>
-                Time In: <br>
+            <p id="ticketDetails"><span id="ticketNumber">Ticket#: <br></span>
+            <span id="ticketDate">Date: <br></span>
+            <span id="ticketTime">Time: <br></span>
             </p>
             <div id="barcode"></div>
         </div>
@@ -32,12 +32,13 @@
                     <strong>
                         Thank you for your business! <br>
                     </strong>
-                    The hourly rate is {rate} <br>
+                    The hourly rate is <span id="hourlyRate">{rate}</span><br>
                     Lost tickets will result in a full day charge of $18.00
                 </small>
             </p>
         </div>
     </div>
+    <script src='../../app/js/ticket.js'></script>
     <script>let $ = require('jquery');</script>
     <script>require('popper.js');</script>
     <script>require('bootstrap');</script>

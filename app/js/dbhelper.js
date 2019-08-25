@@ -75,7 +75,7 @@ function createTicket(username) {
             if (err) {
                 reject('Error: ' + err.message)
             } else {
-                db.get('SELECT ticketNumber FROM tickets WHERE username = ? ORDER BY ticketNumber Desc', 
+                db.get('SELECT ticketNumber, createdDate FROM tickets WHERE username = ? ORDER BY ticketNumber Desc', 
                 username, (err, row) => {
                     if (err) {
                         reject('Error: ' + err.message)

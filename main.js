@@ -69,7 +69,7 @@ function createLoginWindow() {
 }
 
 //Create printWindow
-function createPrintWindow(templateUrl) {
+function createPrintWindow(templateUrl, data) {
     printWindow = new BrowserWindow({
         parent: mainWindow,
         width: 200,
@@ -86,6 +86,8 @@ function createPrintWindow(templateUrl) {
         protocol: 'file:',
         slashes: true
     }));
+    // //Send print data to template
+    // printWindow.webContents.send('send:data', data)
     //Print html file
     printWindow.webContents.on('did-finish-load', () => {
         //Print PDF Test
@@ -99,6 +101,8 @@ function createPrintWindow(templateUrl) {
         //         }
         //     })
         // })
+        //Send print data to template
+        printWindow.webContents.send('send:data', data)
         //Print the contents of the HTML Template
         printWindow.webContents.print({
             silent: false
@@ -136,7 +140,8 @@ app.on('ready', () => {
 
     //Ticket Message Box
     ipcMain.on('send:ticket', (event, ticket) => {
-        createPrintWindow('app/templates/ticket.html')
+        //Generate receipt in print window
+        createPrintWindow('app/templates/ticket.html', ticket)
         const options = {
             type: 'info',
             title: 'Ticket',
