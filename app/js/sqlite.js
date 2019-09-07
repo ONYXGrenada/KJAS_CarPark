@@ -6,19 +6,10 @@ const db = new sqlite3.Database('./db/testdb.sqlite3', (err)=>{
         console.log('Error when creating the database', err)
     } else {
         console.log('Database created!')
-        //createTable()
-        //updateData()
-        //createTicketTable()
     }
-    /*db.exec('PRAGMA foreign_keys = ON;', (error)=>{
-        if (error){
-            console.error("Pragma statement didn't work.")
-        } else {
-            console.log("Foreign Key Enforcement is on.")
-        }
-    });*/
 })
 
+//Create User Table
 const createUserTable = () => {
     console.log('Create database table for users')
     db.run(`CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE,

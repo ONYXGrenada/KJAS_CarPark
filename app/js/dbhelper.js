@@ -24,8 +24,8 @@ const insertAdminUser = () =>{
 //Create Ticket Table
 function createTicketTable() {
     console.log('Create database table for Tickets')
-    db.run(`CREATE TABLE IF NOT EXISTS tickets (ticketNumber INTEGER PRIMARY KEY AUTOINCREMENT, ticketType TEXT,
-    createdDate DATETIME DEFAULT CURRENT_TIMESTAMP, closedDate DATETIME, status TEXT, ticketCost REAL, balance REAL,
+    db.run(`CREATE TABLE IF NOT EXISTS tickets (id INTEGER PRIMARY KEY AUTOINCREMENT, ticketNumber TEXT, ticketType TEXT,
+    createdDate DATETIME DEFAULT CURRENT_TIMESTAMP, closedDate DATETIME, status TEXT, rate REAL, ticketCost REAL, balance REAL,
     username TEXT)`)
 }
 
@@ -33,14 +33,22 @@ function createTicketTable() {
 function createSpecialTicketTable() {
     console.log('Create database table for Special Tickets')
     db.run(`CREATE TABLE IF NOT EXISTS specialTickets (id INTEGER PRIMARY KEY AUTOINCREMENT, vehicleRegistration TEXT,
-    ticketType TEXT, startDate DATETIME, endDate DATETIME, status TEXT, ticketCost REAL, balance REAL, username TEXT)`)
+    ticketType TEXT, startDate DATETIME, endDate DATETIME, rate REAL, status TEXT, ticketCost REAL, balance REAL, username TEXT)`)
 }
 
-//Create Transaction Table
-function createTransactionTable() {
-    console.log('Create database table for Transaction')
-    db.run(`CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, ticketNumber TEXT,
-    status TEXT, tranDate DATETIME, ticketCost REAL, amountPaid REAL, balance REAL, receiptNumber TEXT)`)
+//Create Receipt Table
+function createReceiptTable() {
+    console.log('Create database table for Receipt')
+    db.run(`CREATE TABLE IF NOT EXISTS receipts (id INTEGER PRIMARY KEY AUTOINCREMENT, ticketNumber TEXT, ticketType TEXT,
+    createdDate DATETIME DEFAULT CURRENT_TIMESTAMP, closedDate DATETIME, status TEXT, ticketCost REAL, amountPaid REAL, balance REAL, 
+    amountDue REAL, paymentMethod TEXT, chequeNumber TEXT, username TEXT)`)
+}
+
+//Create Ticket Type Table
+function createTicketTypeTable() {
+    console.log('Create database table for Ticket Type')
+    db.run(`CREATE TABLE IF NOT EXISTS ticketType (id INTEGER PRIMARY KEY AUTOINCREMENT, ticketType TEXT, unitCost REAL, status TEXT,
+    createdDate DATETIME DEFAULT CURRENT_TIMESTAMP, username TEXT)`)
 }
 
 //Login function to actually validate against database
