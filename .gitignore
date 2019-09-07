@@ -2,7 +2,7 @@
 node_modules/
 
 #Test SQLite Database
-#db/
+db/
 
 #Test JS Files
 #app/js/sqlite.js
