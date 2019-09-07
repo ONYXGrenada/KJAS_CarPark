@@ -18,7 +18,17 @@ function createUserTable() {
 //Insert Admin User
 const insertAdminUser = () =>{
     console.log('Insert the default Administrator User')
-    db.run('INSERT INTO users (username, password, firstName, lastName) VALUES (?,?,?,?)', ['admin','admin','Admin','User']);
+    db.get('SELECT username FROM users WHERE username = ?', 'admin', (err, row) => {
+        if (err) {
+            reject('Error: ' + err.message)
+        } else {
+            if (row) {
+                console.log('Administrator User already in table.')
+            } else {
+                db.run('INSERT INTO users (username, password, firstName, lastName) VALUES (?,?,?,?)', ['admin','admin','Admin','User']);
+            }
+        }
+    })    
 }
 
 //Create Ticket Table
@@ -121,11 +131,11 @@ function createTicket(username) {
 }
 
 //Create database tables
-// createUserTable();
-// createTicketTable();
-// createSpecialTicketTable();
-// createReceiptTable();
-// createTicketTypeTable();
+createUserTable();
+createTicketTable();
+createSpecialTicketTable();
+createReceiptTable();
+createTicketTypeTable();
 
 // db.close((err) => {
 //     if (err) {
