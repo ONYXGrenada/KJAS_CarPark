@@ -83,13 +83,33 @@ function createTicket(username) {
             if (err) {
                 reject('Error: ' + err.message)
             } else {
-                db.get('SELECT ticketNumber, createdDate FROM tickets WHERE username = ? ORDER BY ticketNumber Desc', 
-                username, (err, row) => {
+                //Select last created ticket for the current user 
+                db.get('SELECT id FROM tickets WHERE username = ? ORDER BY id Desc LIMIT 1', username, (err, row) => {
                     if (err) {
                         reject('Error: ' + err.message)
                     } else {
                         if (row) {
-                            resolve(row)
+                            //Create ticket number for last created ticket
+                            db.run('UPDATE tickets SET ticketNumber = ? WHERE id = ?', [row.id, row.id], (err) => {
+                                if (err) {
+                                    reject('Error: ' + err.message)
+                                }
+                                else {
+                                    //Return last created ticket number to main program
+                                    db.get('SELECT ticketNumber, createdDate FROM tickets WHERE username = ? ORDER BY id Desc LIMIT 1', 
+                                    username, (err, row) => {
+                                        if (err) {
+                                            reject('Error: ' + err.message)
+                                        } else {
+                                            if (row) {
+                                                resolve(row)
+                                            } else {
+                                                resolve('Database Error')
+                                            }
+                                        }
+                                    })
+                                }
+                            })
                         } else {
                             resolve('Database Error')
                         }
@@ -101,11 +121,11 @@ function createTicket(username) {
 }
 
 //Create database tables
-createUserTable();
-createTicketTable();
-createSpecialTicketTable();
-createReceiptTable();
-createTicketTypeTable();
+// createUserTable();
+// createTicketTable();
+// createSpecialTicketTable();
+// createReceiptTable();
+// createTicketTypeTable();
 
 // db.close((err) => {
 //     if (err) {
