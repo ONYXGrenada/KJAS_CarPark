@@ -100,6 +100,13 @@ function createTicket(username) {
     })
 }
 
+//Create database tables
+createUserTable();
+createTicketTable();
+createSpecialTicketTable();
+createReceiptTable();
+createTicketTypeTable();
+
 // db.close((err) => {
 //     if (err) {
 //         return console.error(err.message);
