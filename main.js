@@ -9,6 +9,7 @@ process.env.NODE_ENV = 'development';
 let mainWindow;
 let loginWindow;
 let printWindow;
+let payTicketSub;
 
 //Create mainWindow
 function createMainWindow() {
@@ -86,21 +87,8 @@ function createPrintWindow(templateUrl, data) {
         protocol: 'file:',
         slashes: true
     }));
-    // //Send print data to template
-    // printWindow.webContents.send('send:data', data)
     //Print html file
     printWindow.webContents.on('did-finish-load', () => {
-        //Print PDF Test
-        // printWindow.webContents.printToPDF({}, (error, data) => {
-        //     if (error) console.log(error.message)
-        //     fs.writeFileSync('app/tmp/print.pdf', data, (error) => {
-        //         if (error) {
-        //             console.log(error.message)
-        //         } else {
-        //             console.log('Write PDF successfully.')
-        //         }
-        //     })
-        // })
         //Send print data to template
         printWindow.webContents.send('send:data', data)
         //Print the contents of the HTML Template
@@ -117,6 +105,30 @@ function createPrintWindow(templateUrl, data) {
     //Clean up on close
     printWindow.on('closed', () => {
         printWindow = null
+    })
+}
+
+//Create Pay Ticket Sub
+function createPayTicketSub() {
+    payTicketSub = new BrowserWindow({
+        parent: mainWindow,
+        width: 400,
+        height: 300,
+        webPreferences: {
+            nodeIntegration: true
+        }
+    });
+    payTicketSub.setMenuBarVisibility(true)
+    //Load html into window
+    payTicketSub.loadURL(url.format({
+        pathname: path.join(__dirname, 'app/windows/payTicketSub.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+
+    //Quit app when payTicketSub closed
+    payTicketSub.on('closed', () => {
+        payTicketSub = null   
     })
 }
 
@@ -153,13 +165,14 @@ app.on('ready', () => {
 
     //Pay Ticket Message Box
     ipcMain.on('send:pay', (event) => {
-        const options = {
-            type: 'info',
-            title: 'Pay Ticket',
-            message: 'Functionality not yet programmed!',
-            buttons: ['Ok']
-        }
-        dialog.showMessageBox(null, options)
+        createPayTicketSub()
+        // const options = {
+        //     type: 'info',
+        //     title: 'Pay Ticket',
+        //     message: 'Functionality not yet programmed!',
+        //     buttons: ['Ok']
+        // }
+        // dialog.showMessageBox(null, options)
     })
 
     //Pay Ticket Message Box

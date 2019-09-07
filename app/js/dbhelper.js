@@ -130,6 +130,24 @@ function createTicket(username) {
     })
 }
 
+//Get Ticket based on ticket number
+function getTicket(ticketNumber) {
+    return new Promise((resolve, reject) => {
+        //Select last created ticket for the current user 
+        db.get('SELECT * FROM tickets WHERE ticketNumber = ?', ticketNumber, (err, row) => {
+            if (err) {
+                reject('Error: ' + err.message)
+            } else {
+                if (row) {
+                    resolve(row)
+                } else {
+                    resolve('Database Error')
+                }
+            }
+        })
+    })
+}
+
 //Create database tables
 createUserTable();
 createTicketTable();
@@ -146,3 +164,4 @@ createTicketTypeTable();
 
 module.exports.login = login
 module.exports.createTicket = createTicket
+module.exports.getTicket = getTicket
