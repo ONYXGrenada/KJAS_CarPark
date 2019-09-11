@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 
 //start sqlite db connection
-const db = new sqlite3.Database('./db/testdb.sqlite3', (err) => {
+const db = new sqlite3.Database('./app/db/testdb.sqlite3', (err) => {
     if (err) {
         return console.error(err.message)
     }
@@ -61,6 +61,44 @@ function createTicketTypeTable() {
     createdDate DATETIME DEFAULT CURRENT_TIMESTAMP, username TEXT)`)
 }
 
+//Insert Standard Ticket
+function createTicketType(ticketType, unitCost, username) {
+    return new Promise((resolve, reject) => {
+        console.log('Insert new ticket Type')
+
+        //Checks to see if ticket exists in database
+        db.get('SELECT id FROM ticketType WHERE ticketType = ? AND status = ? ORDER BY id Desc LIMIT 1', ticketType, 'open', (err, row) => {
+            if (err) {
+                reject('Ticket not found - Error: ' + err.message)
+            }
+            
+            else {
+                if (row) {
+                    resolve(row)
+                    console.log('Old ticket already in table.')
+                    //If ticket exists then update existing ticket to closed status
+                    db.run('UPDATE ticketType SET status = ? WHERE id = ?', ['closed', row.id], (err) => { 
+                        if (err) {
+                            reject('Error: ' + err.message)
+                        }
+                    })
+                }
+            }
+
+            //Insert new ticket type into table
+            db.run('INSERT INTO ticketType (ticketType, unitCost, status, username) VALUES (?,?,?,?)', [ticketType, unitCost, 'open', username], (err) => {
+                if (err) {
+                    reject('Cannot create ticket - Error: ' + err.message)
+                }
+                else {
+                    resolve('Ticket successfully created')
+                }
+            })
+
+        })
+    })    
+}
+
 //Login function to actually validate against database
 function login(username, password) {
     return new Promise((resolve, reject) => {
@@ -89,44 +127,55 @@ function login(username, password) {
 //Create Ticket function to generate ticket in the ticket table
 function createTicket(username) {
     return new Promise((resolve, reject) => {
-        db.run('INSERT INTO tickets (status, username) VALUES (?,?)', ['open', username], (err) => {
+        //Checks to see if ticket exists in database
+        db.get('SELECT id, unitCost FROM ticketType WHERE ticketType = ? AND status = ? ORDER BY id Desc LIMIT 1', 'standard', 'open', (err, row) => {
             if (err) {
-                reject('Error: ' + err.message)
-            } else {
-                //Select last created ticket for the current user 
-                db.get('SELECT id FROM tickets WHERE username = ? ORDER BY id Desc LIMIT 1', username, (err, row) => {
+                reject('Ticket not found - Error: ' + err.message)
+            }
+            if (row){
+                //rate = row.unitCost
+                console.log(row.unitCost + "~rate display - 1")
+                //include the rest of the function in this area
+                db.run('INSERT INTO tickets (ticketType, status, rate, username) VALUES (?,?,?,?)', ['standard', 'open', row.unitCost, username], (err) => {
                     if (err) {
                         reject('Error: ' + err.message)
                     } else {
-                        if (row) {
-                            //Create ticket number for last created ticket
-                            db.run('UPDATE tickets SET ticketNumber = ? WHERE id = ?', [row.id, row.id], (err) => {
-                                if (err) {
-                                    reject('Error: ' + err.message)
-                                }
-                                else {
-                                    //Return last created ticket number to main program
-                                    db.get('SELECT ticketNumber, createdDate FROM tickets WHERE username = ? ORDER BY id Desc LIMIT 1', 
-                                    username, (err, row) => {
+                        //Select last created ticket for the current user 
+                        db.get('SELECT id FROM tickets WHERE username = ? ORDER BY id Desc LIMIT 1', username, (err, row) => {
+                            if (err) {
+                                reject('Error: ' + err.message)
+                            } else {
+                                if (row) {
+                                    //Create ticket number for last created ticket
+                                    db.run('UPDATE tickets SET ticketNumber = ? WHERE id = ?', [row.id, row.id], (err) => {
                                         if (err) {
                                             reject('Error: ' + err.message)
-                                        } else {
-                                            if (row) {
-                                                resolve(row)
-                                            } else {
-                                                resolve('Database Error')
-                                            }
+                                        }
+                                        else {
+                                            //Return last created ticket number to main program
+                                            db.get('SELECT ticketNumber, createdDate FROM tickets WHERE username = ? ORDER BY id Desc LIMIT 1', 
+                                            username, (err, row) => {
+                                                if (err) {
+                                                    reject('Error: ' + err.message)
+                                                } else {
+                                                    if (row) {
+                                                        resolve(row)
+                                                    } else {
+                                                        resolve('Database Error')
+                                                    }
+                                                }
+                                            })
                                         }
                                     })
+                                } else {
+                                    resolve('Database Error')
                                 }
-                            })
-                        } else {
-                            resolve('Database Error')
-                        }
+                            }
+                        })
                     }
                 })
             }
-        })
+        })        
     })
 }
 
@@ -154,6 +203,7 @@ createTicketTable();
 createSpecialTicketTable();
 createReceiptTable();
 createTicketTypeTable();
+//createTicketType('standard', 2.00, 'sys');
 
 // db.close((err) => {
 //     if (err) {

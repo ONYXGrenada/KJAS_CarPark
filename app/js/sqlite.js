@@ -1,7 +1,7 @@
 // DATABASE CREATION AND TESTING FILE
 const sqlite3 = require('sqlite3')
 
-const db = new sqlite3.Database('./db/testdb.sqlite3', (err)=>{
+const db = new sqlite3.Database('./app/db/testdb.sqlite3', (err)=>{
     if (err){
         console.log('Error when creating the database', err)
     } else {
@@ -53,12 +53,26 @@ read = () => {
 //Read from Tickets
 readTickets = () => {
     console.log('Read data from tickets');
-    db.all('SELECT ticketNumber, ticketType, createdDate, status, username FROM tickets', (err, rows) => {
+    db.all('SELECT ticketNumber, ticketType, createdDate, status, rate, username FROM tickets', (err, rows) => {
         if (err) {
              console.log(err.message)
         } else {
             rows.forEach((row) => {
-                console.log(row.ticketNumber + ' | ' + row.ticketType + ' | ' + row.createdDate + ' | ' + row.status + ' | ' + row.username);
+                console.log(row.ticketNumber + ' | ' + row.ticketType + ' | ' + row.createdDate + ' | ' + row.status + ' | ' + row.rate + ' | ' + row.username);
+            });
+        }
+    });
+}
+
+//Read from Tickets
+readTicketsType = () => {
+    console.log('Read data from ticket type');
+    db.all('SELECT id, ticketType, unitCost, status, createdDate, username FROM ticketType', (err, rows) => {
+        if (err) {
+             console.log(err.message)
+        } else {
+            rows.forEach((row) => {
+                console.log(row.id + ' | ' + row.ticketType + ' | ' + row.unitCost + ' | ' + row.status + ' | ' + row.createdDate + ' | ' + row.username);
             });
         }
     });
@@ -92,8 +106,9 @@ function createTicketTable() {
 
 //createTicketTable()
 
-read()
+//read()
 readTickets()
+readTicketsType()
 //removeTickets()
 // dropUserTable()
 // dropTicketTable()
