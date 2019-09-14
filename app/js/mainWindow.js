@@ -1,5 +1,6 @@
 const {ipcRenderer} = require('electron')
-const dbhelper = require('../../app/js/dbhelper')
+//const dbhelper = require('../../app/js/dbhelper')
+const dbconnection = require('../../app/js/dbconnection')
 
 let userInfo
 let welcomeMessage = document.querySelector('#welcome')

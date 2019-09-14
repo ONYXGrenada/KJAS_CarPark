@@ -1,0 +1,2 @@
+https://support.rackspace.com/how-to/installing-mysql-server-on-ubuntu/
+https://www.a2hosting.com/kb/developer-corner/mysql/managing-mysql-databases-and-users-from-the-command-line

@@ -49,7 +49,7 @@ function createLoginWindow() {
             nodeIntegration: true
         }
     });
-    loginWindow.setMenuBarVisibility(false)
+    loginWindow.setMenuBarVisibility(true)
     //Load html into window
     loginWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'app/windows/loginWindow.html'),

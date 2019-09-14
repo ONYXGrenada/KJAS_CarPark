@@ -1,5 +1,6 @@
 const {ipcRenderer} = require('electron')
-const dbhelper = require('../../app/js/dbhelper')
+//const dbhelper = require('../../app/js/dbhelper')
+const dbconnection = require('../../app/js/dbconnection')
 
 //listen for login button click
 document.querySelector('form').addEventListener('submit', submitForm)
@@ -13,8 +14,9 @@ async function submitForm(e){
     const username = document.querySelector('#txtUser').value
     const password = document.querySelector('#txtPassword').value
     //sqlite login
-    let user = await dbhelper.login(username, password) 
+    let user = await dbconnection.login(username, password) 
     //check if login successful
+    //console.log(user.id)
     if (user.id){
         ipcRenderer.send('login:successful', user)
     } 
