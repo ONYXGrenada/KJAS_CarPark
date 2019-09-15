@@ -14,14 +14,16 @@ async function submitForm(e){
     const username = document.querySelector('#txtUser').value
     const password = document.querySelector('#txtPassword').value
     //sqlite login
+    //console.log("Function worked")
     let user = await dbconnection.login(username, password) 
     //check if login successful
-    //console.log(user.id)
+    console.log(user.id)
     if (user.id){
         ipcRenderer.send('login:successful', user)
     } 
     else{
         loginAttemptCount++
+        //console.log("Count: " + loginAttemptCount)
         if (loginAttemptCount > 3) {
             ipcRenderer.send('login:failure', close)
         }
