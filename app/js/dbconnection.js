@@ -45,7 +45,7 @@ function login(username, password) {
 function insertUser(username, password, firstName, lastName) {
     return new Promise((resolve, reject) => {
         console.log('Insert User Function')
-        connection.query('SELECT username FROM users WHERE username = ?', username, (err, result) => {
+        connection.query('SELECT username FROM users WHERE username = ?', [username], function(err, result) {
             if (err) {
                 reject('Error: ' + result.message)
             } else if (result.length == 1) {
@@ -63,32 +63,28 @@ function insertUser(username, password, firstName, lastName) {
 function createTicket(username) {
     return new Promise((resolve, reject) => {
         //Checks to see if ticket exists in database
-        connection.query('SELECT id, unitCost FROM ticketType WHERE ticketType = ? AND status = ? ORDER BY id Desc LIMIT 1', 'standard', 'open', (err, result) => {
+        connection.query('SELECT id, unitCost FROM ticketType WHERE ticketType = ? AND status = ? ORDER BY id Desc LIMIT 1', ['standard', 'active'], function(err, result) {
             if (err) {
                 reject('Ticket not found - Error: ' + result.message)
-            }
-            if (result){
-                //rate = row.unitCost
-                console.log(result[0].unitCost + "~rate display - 1")
-                //include the rest of the function in this area
-                connection.query('INSERT INTO tickets (ticketType, status, rate, username) VALUES (?,?,?,?)', ['standard', 'open', result[0].unitCost, username], (err) => {
+            } if (result.length > 0){
+                connection.query('INSERT INTO tickets (ticketType, status, rate, username) VALUES (?,?,?,?)', ['standard', 'open', result[0].unitCost, username], function(err) {
                     if (err) {
                         reject('Error: ' + err.message)
                     } else {
                         //Select last created ticket for the current user 
-                        connection.query('SELECT id FROM tickets WHERE username = ? ORDER BY id Desc LIMIT 1', username, (err, result) => {
+                        connection.query('SELECT id FROM tickets WHERE username = ? ORDER BY id Desc LIMIT 1', [username], function(err, result) {
                             if (err) {
                                 reject('Error: ' + err.message)
                             } else {
                                 if (result) {
                                     //Create ticket number for last created ticket
-                                    connection.query('UPDATE tickets SET ticketNumber = ? WHERE id = ?', [result[0].id, result[0].id], (err) => {
+                                    connection.query('UPDATE tickets SET ticketNumber = ? WHERE id = ?', [result[0].id, result[0].id], function(err) {
                                         if (err) {
                                             reject('Error: ' + err.message)
                                         }
                                         else {
                                             //Return last created ticket number to main program
-                                            connection.query('SELECT ticketNumber, createdDate FROM tickets WHERE username = ? ORDER BY id Desc LIMIT 1', username, (err, result) => {
+                                            connection.query('SELECT ticketNumber, createdDate FROM tickets WHERE username = ? ORDER BY id Desc LIMIT 1', [username], function(err, result) {
                                                 if (err) {
                                                     reject('Error: ' + err.message)
                                                 } else {
@@ -117,7 +113,7 @@ function createTicket(username) {
 function getTicket(ticketNumber) {
     return new Promise((resolve, reject) => {
         //Select last created ticket for the current user 
-        connection.query('SELECT * FROM tickets WHERE ticketNumber = ? ORDER BY id Desc LIMIT 1', ticketNumber, (err, result) => {
+        connection.query('SELECT * FROM tickets WHERE ticketNumber = ? ORDER BY id Desc LIMIT 1', [ticketNumber], function(err, result) {
             if (err) {
                 reject('Error: ' + err.message)
             } else {
@@ -137,14 +133,14 @@ function createTicketType(ticketType, unitCost, username) {
         console.log('Insert new ticket Type')
 
         //Checks to see if ticket exists in database
-        connection.query('SELECT id FROM ticketType WHERE ticketType = ? AND status = ? ORDER BY id Desc LIMIT 1', ticketType, 'open', (err, result) => {
+        connection.query('SELECT id FROM ticketType WHERE ticketType = ? AND status = ? ORDER BY id Desc LIMIT 1', [ticketType, 'open'], function(err, result) {
             if (err) {
                 reject('Ticket not found - Error: ' + err.message)
             } else if (result.length == 1) {
                 resolve(result)
                 console.log('Old ticket already in table.')
                 //If ticket exists then update existing ticket to closed status
-                connection.query('UPDATE ticketType SET status = ? WHERE id = ?', ['closed', result[0].id], (err) => { 
+                connection.query('UPDATE ticketType SET status = ? WHERE id = ?', ['closed', result[0].id], function(err) { 
                     if (err) {
                         reject('Error: ' + err.message)
                     }
@@ -154,7 +150,7 @@ function createTicketType(ticketType, unitCost, username) {
             }
 
             //Insert new ticket type into table
-            connection.query('INSERT INTO ticketType (ticketType, unitCost, status, username) VALUES (?,?,?,?)', [ticketType, unitCost, 'open', username], (err) => {
+            connection.query('INSERT INTO ticketType (ticketType, unitCost, status, username) VALUES (?,?,?,?)', [ticketType, unitCost, 'open', username], function(err) {
                 if (err) {
                     reject('Cannot create ticket - Error: ' + err.message)
                 }
@@ -170,3 +166,7 @@ function createTicketType(ticketType, unitCost, username) {
   //connection.end();
 
   module.exports.login = login
+  module.exports.insertUser = insertUser
+  module.exports.createTicket = createTicket
+  module.exports.getTicket = getTicket
+  module.exports.createTicketType = createTicketType

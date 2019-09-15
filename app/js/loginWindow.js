@@ -17,7 +17,7 @@ async function submitForm(e){
     //console.log("Function worked")
     let user = await dbconnection.login(username, password) 
     //check if login successful
-    console.log(user.id)
+    console.log(user.id + " - " + user.username)
     if (user.id){
         ipcRenderer.send('login:successful', user)
     } 

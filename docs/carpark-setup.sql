@@ -1,8 +1,8 @@
 -- Create database and user then grant priviledges to created user to database
-INSERT INTO mysql.user (User,Host,authentication_string,ssl_cipher,x509_issuer,x509_subject) VALUES('admin','localhost',PASSWORD('Pa$$word1'),'','','');
-FLUSH PRIVILEDGES;
-CREATE DATABASE carpark;
-GRANT ALL PRIVILEGES ON carpark.* TO 'admin'@'localhost' IDENTIFIED BY 'Pa$$word1';
+-- INSERT INTO mysql.user (User,Host,authentication_string,ssl_cipher,x509_issuer,x509_subject) VALUES('admin','localhost',PASSWORD('Pa$$word1'),'','','');
+-- FLUSH PRIVILEDGES;
+-- CREATE DATABASE carpark;
+-- GRANT ALL PRIVILEGES ON carpark.* TO 'admin'@'localhost' IDENTIFIED BY 'Pa$$word1';
 
 USE carpark;
 
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `tickets` (
     PRIMARY KEY(`id`) );
 
 CREATE TABLE IF NOT EXISTS `specialTickets` (
-    `id` INTEGER PRIMARY KEY AUTO_INCREMENT, 
+    `id` INTEGER AUTO_INCREMENT, 
     `vehicleRegistration` TEXT,
     `ticketType` TEXT, 
     `startDate` DATETIME, 
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `specialTickets` (
     PRIMARY KEY(`id`) );
 
 CREATE TABLE IF NOT EXISTS `receipts` (
-    `id` INTEGER PRIMARY KEY AUTO_INCREMENT, 
+    `id` INTEGER AUTO_INCREMENT, 
     `ticketNumber` TEXT, 
     `ticketType` TEXT,
     `createdDate` DATETIME DEFAULT CURRENT_TIMESTAMP, 
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `receipts` (
     PRIMARY KEY(`id`) );
 
 CREATE TABLE IF NOT EXISTS `ticketType` (
-    `id` INTEGER PRIMARY KEY AUTO_INCREMENT, 
+    `id` INTEGER AUTO_INCREMENT, 
     `ticketType` TEXT, 
     `unitCost` REAL, 
     `status` TEXT,
