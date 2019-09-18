@@ -7,15 +7,31 @@
     <title>Login</title>
 </head>
 <body>
-    <div class="container text-center">
+    <div class="container">
         <br/>
-        <form class="form-payTicket">
+        <!-- <form class="form-payTicket"> -->
             <!-- <h1 class="h1 font-weight-normal">Enter Ticket Number</h1> -->
             <input type="text" class="form-control" id="txtTicketNumber" placeholder="Enter Ticket Number" required autofocus>
             <div>
             </div>
-            <button class="btn btn-lg btn-primary btn-block mt-3" id="btnPayTicket" type="submit">Pay</button>
-        </form>
+            <!-- <button class="btn btn-lg btn-primary btn-block mt-3" id="btnPayTicket" type="submit">Pay</button> -->
+        <!-- </form> -->
+        <br />
+        <div class="card">
+            <div class="card-header">
+              Ticket
+            </div>
+            <div class="card-body">
+              <!-- <h5 class="card-title">Special title treatment</h5> -->
+              <p class="card-text" id="sTime">Enter Time: </p>
+              <p class="card-text" id="eTime">Exit Time: </p>
+              <p class="card-text" id="duration">Duration: </p>
+              <p class="card-text" id="tType">Ticket Type: </p>
+              <p class="card-text" id="tCost">Cost :</p>
+              <a href="#" class="btn btn-primary">Pay Ticket</a>
+            </div>
+          </div>
+
     </div>
     <script src="../../app/js/payTicketSub.js"></script>
     <script>let $ = require('jquery');</script>
