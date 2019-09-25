@@ -12,12 +12,15 @@ git clone https://github.com/ONYXGrenada/CarParkManager.git
 ```bash
 cd CarParkManager
 npm install --save electron
-npm install --save sqlite3
+npm install --save mysql
 npm install --save jquery
 npm install --save popper.js
 npm install --save bootstrap
 npm run postinstall
 ```
+
+## Start Docker Container
+Read docker-MySQL.txt in the docs folder
 
 ## Start Application
 ```bash
