@@ -168,6 +168,32 @@ function createTicketType(ticketType, unitCost, username) {
         })
     })    
 }
+
+function createReceipt(ticketID) {
+    return new Promise((resolve, reject) => {
+        //Checks to see if ticket exists in database
+        connection.query('SELECT ticketNumber, ticketType, createdDate, closedDate, status, rate, ticketCost, balance, username FROM tickets WHERE id = ? ORDER BY id Desc LIMIT 1', [ticketID], function(err, result) {
+            if (err) {
+                reject('Cannot create receipt - Error: ' + err.message)
+            } else {
+                //Create receipt code here
+                connection.query('UPDATE tickets SET closedDate = ?, status = ?, ticketCost = ?, balance = ? WHERE id = ?', [closedDate, 'closed', ticketCost, balance, ticketID], function(err) { 
+                    if (err) {
+                        reject('Cannot create receipt - Error: ' + err.message)
+                    } else {
+                        connection.query('INSERT INTO receipts (ticketNumber, ticketType, closedDate, status, ticketCost, amountPaid, balance, amountDue, paymentMethod, chequeNumber, username) VALUES (?,?,?,?,?,?,?,?,?,?,?)', [ticketNumber, ticketType, closedDate, 'paid', ticketCost, amountPaid, balance, amountDue, paymentMethod, chequeNumber, username], function(err) {
+                            if (err) {
+                                reject('Cannot create receipt - Error: ' + err.message)
+                            } else {
+                                resolve('Ticket has been successfully paid.')
+                            }
+                        })
+                    }
+                })                
+            }
+        })
+    })
+}
    
   //connection.end();
 

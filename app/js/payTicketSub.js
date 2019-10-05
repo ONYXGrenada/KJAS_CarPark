@@ -11,6 +11,18 @@ document.querySelector('#txtTicketNumber').addEventListener('keyup', async(e) =>
         const ticketNumber = document.querySelector('#txtTicketNumber').value
         let ticket = await connection.getTicket(ticketNumber)
 
+        if (ticket.id > 0) {
+            document.querySelector('#customerTicket').removeAttribute('hidden')
+            //document.querySelector('#customerTicket').setAttribute("hidden", false)
+            ipcRenderer.send('window:resize', 500)
+        }
+
+        else {
+            document.querySelector('#customerTicket').setAttribute("hidden", true)
+            ipcRenderer.send('window:resize', 150)
+        }
+
+
         //Set ticket values
         let endTime = new Date()
         let ticketDuration = convertMS(endTime - ticket.createdDate)

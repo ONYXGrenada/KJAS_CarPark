@@ -113,7 +113,7 @@ function createPayTicketSub() {
     payTicketSub = new BrowserWindow({
         parent: mainWindow,
         width: 400,
-        height: 300,
+        height: 150,
         webPreferences: {
             nodeIntegration: true
         }
@@ -185,6 +185,11 @@ app.on('ready', () => {
         }
         dialog.showMessageBox(null, options)
     })
+
+    //Adjust window size
+    ipcMain.on('window:resize', (event, arg) => {
+        payTicketSub.setSize(400, arg)
+    });
 })
 
 //Quit app when all windows are closed
