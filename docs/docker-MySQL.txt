@@ -3,7 +3,7 @@ Install docker according to instructions for your OS.
 #Start and execute Docker Container
 #had to do these commands as root user (add sudo before commands)
 docker pull mysql
-docker run -p 3306:3306 --name cpm-mysql -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=carpark -d mysql:latest
+docker run -p 3306:3306 --name cpm-mysql -e TZ='America/Grenada' -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=carpark -d mysql:latest
 cd CarParkManager/docs/
 docker exec -i cpm-mysql mysql -u root --password=password < carpark-setup.sql
 #docker exec -i cpm-mysql mysql -u root --password=password -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';"
