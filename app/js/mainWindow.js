@@ -24,6 +24,11 @@ document.querySelector('#btnGenerateTicket').addEventListener('click', async () 
     }
 })
 
+//Listen for Special Ticket Button
+document.querySelector('#btnSpecialTicket').addEventListener('click', async () => {
+    ipcRenderer.send('send:special')
+})
+
 //Listen for Pay Ticket Button and close ticket after payment (How to handle Bar Code Scanner?)
 document.querySelector('#btnPayTicket').addEventListener('click', () => {
     ipcRenderer.send('send:pay')
