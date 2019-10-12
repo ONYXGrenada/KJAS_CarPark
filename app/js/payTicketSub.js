@@ -26,9 +26,19 @@ document.querySelector('#txtTicketNumber').addEventListener('keyup', async(e) =>
         //Set ticket values
         let endTime = new Date()
         let ticketDuration = convertMS(endTime - ticket.createdDate)
-        let ticketCost = ticket.rate * ticketDuration.hour
+        //let timeSpent = ticketDuration.hour + 1
+        let timeSpent = Math.ceil(Math.abs(endTime.getTime() - ticket.createdDate.getTime()) / 3600000)
+        // let ticketCost = ticket.rate * ticketDuration.hour
+        let ticketCost = ticket.rate * timeSpent
         let displaySTime = ticket.createdDate.getFullYear() + "/" + ticket.createdDate.getMonth() + "/" + ticket.createdDate.getDate() + " " + ticket.createdDate.getHours() + ":" + ticket.createdDate.getMinutes() + ":" + ticket.createdDate.getSeconds()
         let displayETime = endTime.getFullYear() + "/" + endTime.getMonth() + "/" + endTime.getDate() + " " + endTime.getHours() + ":" + endTime.getMinutes() + ":" + endTime.getSeconds()
+
+
+
+
+
+
+
         document.getElementById('sTime').innerHTML = "Enter Time: " + displaySTime
         document.getElementById('eTime').innerHTML = "Exit Time: " + displayETime
         document.getElementById('duration').innerHTML = "Duration: " + ticketDuration.day + " day(s) " + ticketDuration.hour + " hour(s) " + ticketDuration.minute + " mintue(s) " + ticketDuration.seconds + " second(s)" 

@@ -186,6 +186,17 @@ app.on('ready', () => {
         dialog.showMessageBox(null, options)
     })
 
+    //Other Tickets Message Box
+    ipcMain.on('send:other', (event) => {
+        const options = {
+            type: 'info',
+            title: 'Other Tickets',
+            message: 'Functionality not yet programmed!',
+            buttons: ['Ok']
+        }
+        dialog.showMessageBox(null, options)
+    })
+
     //Adjust window size
     ipcMain.on('window:resize', (event, arg) => {
         payTicketSub.setSize(400, arg)

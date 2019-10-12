@@ -104,7 +104,14 @@ function createTicketTable() {
     username TEXT)`)
 }
 
-//createTicketTable()
+//Create Transaction Table
+
+function createTicketTable() {
+    console.log('Create database table for Tickets')
+    db.run(`CREATE TABLE IF NOT EXISTS tickets (ticketNumber INTEGER PRIMARY KEY AUTOINCREMENT, ticketType TEXT,
+    createdDate DATETIME DEFAULT CURRENT_TIMESTAMP, closedDate DATETIME, status TEXT, ticketCost REAL, balance REAL,
+    username TEXT)`)
+}
 
 //read()
 readTickets()

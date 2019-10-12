@@ -33,3 +33,4 @@ document.querySelector('#btnPayTicket').addEventListener('click', () => {
 document.querySelector('#btnLostTicket').addEventListener('click', () => {
     ipcRenderer.send('send:lost')
 })
+
