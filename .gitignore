@@ -9,3 +9,7 @@ db/
 
 #Temporary Files
 app/tmp/
+
+#Package files
+package-lock.json
+package.json
