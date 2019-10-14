@@ -33,7 +33,11 @@ document.querySelector('#txtTicketNumber').addEventListener('keyup', async(e) =>
         let displaySTime = ticket.createdDate.getFullYear() + "/" + ticket.createdDate.getMonth() + "/" + ticket.createdDate.getDate() + " " + ticket.createdDate.getHours() + ":" + ticket.createdDate.getMinutes() + ":" + ticket.createdDate.getSeconds()
         let displayETime = endTime.getFullYear() + "/" + endTime.getMonth() + "/" + endTime.getDate() + " " + endTime.getHours() + ":" + endTime.getMinutes() + ":" + endTime.getSeconds()
 
-
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2
+        })
 
 
 
@@ -43,7 +47,7 @@ document.querySelector('#txtTicketNumber').addEventListener('keyup', async(e) =>
         document.getElementById('eTime').innerHTML = "Exit Time: " + displayETime
         document.getElementById('duration').innerHTML = "Duration: " + ticketDuration.day + " day(s) " + ticketDuration.hour + " hour(s) " + ticketDuration.minute + " mintue(s) " + ticketDuration.seconds + " second(s)" 
         document.getElementById('tType').innerHTML = "Ticket Type: " + ticket.ticketType
-        document.getElementById('tCost').innerHTML = "Cost: " + ticketCost
+        document.getElementById('tCost').innerHTML = "Cost: " + formatter.format(ticketCost)
 
         //calculate cost (need ticket create date, rate and now)
         console.log(ticket.id + " this is where the ticket is supposed to print")

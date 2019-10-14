@@ -14,3 +14,6 @@ docker stop cpm-mysql
 
 #Remove Docker Container
 docker rm cpm-mysql
+
+#Set MySQL timezone manually to Atlantic Standard Time (AST)
+docker exec -i cpm-mysql mysql -u root --password=password -e "set GLOBAL time_zone='-04:00';"
