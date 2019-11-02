@@ -8,7 +8,7 @@ USE carpark;
 
 -- Create tables
 CREATE TABLE IF NOT EXISTS `users` ( 
-    `id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT, 
+    `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT, 
     `username` TEXT NOT NULL, 
     `password` TEXT, 
     `salt` TEXT, 
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     PRIMARY KEY (`id`) );
 
 CREATE TABLE IF NOT EXISTS `tickets` (
-    `id` SMALLINT AUTO_INCREMENT, 
+    `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT, 
     `ticketNumber` TEXT, 
     `ticketType` TEXT,
     `createdDate` DATETIME DEFAULT CURRENT_TIMESTAMP, 
@@ -32,20 +32,23 @@ CREATE TABLE IF NOT EXISTS `tickets` (
     PRIMARY KEY(`id`) );
 
 CREATE TABLE IF NOT EXISTS `specialTickets` (
-    `id` INTEGER AUTO_INCREMENT, 
+    `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT, 
     `vehicleRegistration` TEXT,
     `ticketType` TEXT, 
     `startDate` DATETIME, 
-    `endDate` DATETIME, 
+    `endDate` DATETIME,
+    `createdDate` DATETIME DEFAULT CURRENT_TIMESTAMP, 
+    `closedDate` DATETIME,  
     `rate` REAL, 
     `status` TEXT, 
     `ticketCost` REAL, 
     `balance` REAL, 
+    `noOfVisits` SMALLINT,
     `username` TEXT,
     PRIMARY KEY(`id`) );
 
 CREATE TABLE IF NOT EXISTS `receipts` (
-    `id` INTEGER AUTO_INCREMENT, 
+    `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT, 
     `ticketNumber` TEXT, 
     `ticketType` TEXT,
     `createdDate` DATETIME DEFAULT CURRENT_TIMESTAMP, 
@@ -61,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `receipts` (
     PRIMARY KEY(`id`) );
 
 CREATE TABLE IF NOT EXISTS `ticketType` (
-    `id` INTEGER AUTO_INCREMENT, 
+    `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT, 
     `ticketType` TEXT, 
     `unitCost` REAL, 
     `status` TEXT,
