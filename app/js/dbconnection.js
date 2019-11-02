@@ -246,6 +246,7 @@ function createReceipt(ticketID) {
   module.exports.login = login
   module.exports.insertUser = insertUser
   module.exports.createTicket = createTicket
+  module.exports.createSpecialTicket = createSpecialTicket
   module.exports.getTicket = getTicket
   module.exports.createTicketType = createTicketType
   module.exports.getTicketType = getTicketType
