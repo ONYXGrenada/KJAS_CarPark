@@ -1,0 +1,36 @@
+#General workflow 
+
+Create Issue: 
+Create issue on the GitHub project 
+
+Create and switch to new branch for specific issue: 
+```bash
+git checkout –b <Descriptive-Branch-Name> 
+```
+
+Commit changes to branch: 
+```bash
+git status (to see files) 
+git add <filename> (for specific files) | git add .  (for all files) 
+git commit –m "descriptive commit message" 
+```
+
+Share changes on GitHub: 
+```bash
+git push –set-upstream origin <Descriptive-Branch-Name> (for initial) | git push (subsequent updates) 
+```
+
+Review changes on issue: 
+The team will discuss the new branch changes on the issue and decide when to merge. 
+
+Merge Changes to Master Branch: 
+```bash
+git checkout master 
+git merge <Descriptive-Branch-Name> 
+```
+
+Delete merged branch: 
+```bash
+git branch –d <Descriptive-Branch-Name> (DON'T DELETE MASTER!!!) 
+git push –d origin <Descriptive-Branch-Name> (DON'T DELETE MASTER!!!) 
+```
