@@ -13,3 +13,7 @@ app/tmp/
 #Package files
 package-lock.json
 package.json
+
+#IDE Files
+.vscode/
+.idea/
