@@ -34,3 +34,9 @@ Delete merged branch:
 git branch –d <Descriptive-Branch-Name> (DON'T DELETE MASTER!!!) 
 git push –d origin <Descriptive-Branch-Name> (DON'T DELETE MASTER!!!) 
 ```
+
+Update Working Branch with changes from Master Branch
+```bash
+git pull origin master
+git push
+```

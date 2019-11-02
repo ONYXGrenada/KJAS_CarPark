@@ -1,16 +1,17 @@
-Install docker according to instructions for your OS.
+#Install docker according to instructions for your OS.
+#For Linux with snap
+#snap install docker
 
 #Start and execute Docker Container
 #had to do these commands as root user (add sudo before commands)
-docker pull mysql
-docker run -p 3306:3306 --name cpm-mysql -e TZ='America/Grenada' -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=carpark -d mysql:latest
+sudo docker pull mysql
+sudo docker run -p 3306:3306 --name cpm-mysql -e TZ='America/Grenada' -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=carpark -d mysql:latest
 cd CarParkManager/docs/
-docker exec -i cpm-mysql mysql -u root --password=password < carpark-setup.sql
-#docker exec -i cpm-mysql mysql -u root --password=password -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';"
-docker exec -i cpm-mysql mysql -u root --password=password -e "CREATE USER 'dbuser'@'%' IDENTIFIED WITH mysql_native_password BY 'password';GRANT ALL PRIVILEGES ON carpark.* to 'dbuser'@'%';FLUSH PRIVILEGES;"
+sudo sh -c 'docker exec -i cpm-mysql mysql -u root --password=password < carpark-setup.sql'
+sudo docker exec -i cpm-mysql mysql -u root --password=password -e "CREATE USER 'dbuser'@'%' IDENTIFIED WITH mysql_native_password BY 'password';GRANT ALL PRIVILEGES ON carpark.* to 'dbuser'@'%';FLUSH PRIVILEGES;"
 
 #Stop Docker Container
-docker stop cpm-mysql
+sudo docker stop cpm-mysql
 
 #Remove Docker Container
-docker rm cpm-mysql
+sudo docker rm cpm-mysql
