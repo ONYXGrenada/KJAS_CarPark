@@ -1,0 +1,30 @@
+{
+  "name": "carparkmanager",
+  "version": "1.0.0",
+  "description": "Generic Software to Manage Car Parks. This is in development stages.",
+  "main": "main.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "electron": "^7.0.1",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.16.0",
+    "bootstrap": "^4.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ONYXGrenada/CarParkManager.git"
+  },
+  "author": "Onyx IT",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/ONYXGrenada/CarParkManager/issues"
+  },
+  "homepage": "https://github.com/ONYXGrenada/CarParkManager#readme"
+}
