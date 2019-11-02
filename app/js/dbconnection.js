@@ -202,6 +202,19 @@ function createTicketType(ticketType, unitCost, username) {
     })    
 }
 
+//Get Ticket type information
+function getTicketType(ticketType) {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT unitCost, displayName, description FROM ticketType WHERE ticketType = ? AND status = ?', [ticketType, 'active'], function(err, result) {
+            if (err) {
+                reject('Ticket type not found - Error: ' + err.message)
+            } else if (result.length == 1) {
+                resolve(result[0])
+            }                
+        })
+    })
+}
+
 function createReceipt(ticketID) {
     return new Promise((resolve, reject) => {
         //Checks to see if ticket exists in database
@@ -235,3 +248,4 @@ function createReceipt(ticketID) {
   module.exports.createTicket = createTicket
   module.exports.getTicket = getTicket
   module.exports.createTicketType = createTicketType
+  module.exports.getTicketType = getTicketType
