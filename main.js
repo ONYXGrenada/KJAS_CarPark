@@ -137,7 +137,7 @@ function createSpecialTicketSub() {
     specialTicketSub = new BrowserWindow({
         parent: mainWindow,
         width: 400,
-        height: 300,
+        height: 250,
         webPreferences: {
             nodeIntegration: true
         }
@@ -228,8 +228,8 @@ app.on('ready', () => {
     });
 
     //Adjust window size
-    ipcMain.on('window:resize-special', (event, arg) => {
-        specialTicketSub.setSize(arg, 300)
+    ipcMain.on('window:resize-special', (event, arg1, arg2) => {
+        specialTicketSub.setSize(arg2, arg1)
     });
 })
 

@@ -2,26 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/specialTicketSub.css">
     <title>Special Tickets</title>
 </head>
 <body>
     <div class="card-deck">
-      <div class="card"><div class="card-body">
+      <div class="card">
+      <div class="card-body">
         <button class="btn btn-info btn-block" id="btnDailyTicket">Daily Ticket</button>
         <button class="btn btn-primary btn-block" id="btnMonthlyTicket">Monthly Ticket</button>
         <button class="btn btn-success btn-block" id="btnSpecialTicket">Special Ticket</button>
-      </div></div>    
+      </div>
+      </div>    
 
         <div class="card" id="ticketInfoArea" hidden>
           <div class="card-header">
             <h4 id="ticketType"></h4>
           </div>
-          <div class="card-body">
+          <div class="card-body">            
             <p class="card-text" id="ticketInfo"></p>
-            <a href="#" class="btn btn-primary">Print</a>
-           </div>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                  <button class="btn" type="button">Pay Amount: $</button>
+                </div>
+                <input type="text" class="form-control" id="varDailyPayAmount" placeholder="" aria-label="" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <button class="btn" type="button">License Plate #</button>
+                </div>
+                <input type="text" class="form-control" id="varDailyLicense" placeholder="" aria-label="" aria-describedby="basic-addon1">
+              </div>
+              <div>
+                <br/>
+              </div>
+            <button class="btn btn-primary btn-block" type="button" id="btnDailySubmit">Submit</button>
+          </div>
         </div>
     </div>
     
