@@ -1,8 +1,8 @@
 -- Create database and user then grant priviledges to created user to database
 -- INSERT INTO mysql.user (User,Host,authentication_string,ssl_cipher,x509_issuer,x509_subject) VALUES('admin','localhost',PASSWORD('Pa$$word1'),'','','');
 -- FLUSH PRIVILEDGES;
--- CREATE DATABASE carpark;
--- GRANT ALL PRIVILEGES ON carpark.* TO 'admin'@'localhost' IDENTIFIED BY 'Pa$$word1';
+ CREATE DATABASE carpark;
+ GRANT ALL PRIVILEGES ON carpark.* TO 'admin'@'localhost' IDENTIFIED BY 'Pa$$word1';
 
 USE carpark;
 

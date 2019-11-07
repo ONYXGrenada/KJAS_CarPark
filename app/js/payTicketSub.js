@@ -26,13 +26,13 @@ document.querySelector('#txtTicketNumber').addEventListener('keyup', async(e) =>
         //Set ticket values
         let endTime = new Date()
         let ticketDuration = convertMS(endTime - ticket.createdDate)
-        //let timeSpent = ticketDuration.hour + 1
         let timeSpent = Math.ceil(Math.abs(endTime.getTime() - ticket.createdDate.getTime()) / 3600000)
-        // let ticketCost = ticket.rate * ticketDuration.hour
         let ticketCost = ticket.rate * timeSpent
-        let displaySTime = ticket.createdDate.getFullYear() + "/" + ticket.createdDate.getMonth() + "/" + ticket.createdDate.getDate() + " " + ticket.createdDate.getHours() + ":" + ticket.createdDate.getMinutes() + ":" + ticket.createdDate.getSeconds()
-        let displayETime = endTime.getFullYear() + "/" + endTime.getMonth() + "/" + endTime.getDate() + " " + endTime.getHours() + ":" + endTime.getMinutes() + ":" + endTime.getSeconds()
+        let dateOptions = {weekday: "short", year: "numeric", month:"short", day:"2-digit", timeZone:"America/Grenada", hour12 : true, hour:  "2-digit",  minute: "2-digit" }
+//        let timeOptions = {timeZone:"America/Grenada", hour12 : true, hour:  "2-digit",  minute: "2-digit"}
 
+        let displaySTime = ticket.createdDate.toLocaleDateString("en-US", dateOptions)
+        let displayETime = endTime.toLocaleDateString("en-US", dateOptions)
 
 
 
@@ -43,13 +43,17 @@ document.querySelector('#txtTicketNumber').addEventListener('keyup', async(e) =>
         document.getElementById('eTime').innerHTML = "Exit Time: " + displayETime
         document.getElementById('duration').innerHTML = "Duration: " + ticketDuration.day + " day(s) " + ticketDuration.hour + " hour(s) " + ticketDuration.minute + " mintue(s) " + ticketDuration.seconds + " second(s)" 
         document.getElementById('tType').innerHTML = "Ticket Type: " + ticket.ticketType
-        document.getElementById('tCost').innerHTML = "Cost: " + ticketCost
+        document.getElementById('tCost').innerHTML = "Cost: " + formatter.format(ticketCost)
 
         //calculate cost (need ticket create date, rate and now)
         console.log(ticket.id + " this is where the ticket is supposed to print")
     }
 })
 
+var formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+});
 
 function convertMS( milliseconds ) {
     var day, hour, minute, seconds;
