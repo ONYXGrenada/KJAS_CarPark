@@ -25,6 +25,7 @@ document.querySelector('#txtTicketNumber').addEventListener('keyup', async(e) =>
 
         //Set ticket values
         let endTime = new Date()
+
         let ticketDuration = convertMS(endTime - ticket.createdDate)
         let timeSpent = Math.ceil(Math.abs(endTime.getTime() - ticket.createdDate.getTime()) / 3600000)
         let ticketCost = ticket.rate * timeSpent
@@ -34,7 +35,13 @@ document.querySelector('#txtTicketNumber').addEventListener('keyup', async(e) =>
         let displaySTime = ticket.createdDate.toLocaleDateString("en-US", dateOptions)
         let displayETime = endTime.toLocaleDateString("en-US", dateOptions)
 
+        switch(ticket.ticketType){
+            case "standard":
+                   break;
 
+            case "monthly":
+                break;
+        }
 
 
 
