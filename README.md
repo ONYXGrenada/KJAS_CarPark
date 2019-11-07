@@ -16,7 +16,6 @@ npm install --save mysql
 npm install --save jquery
 npm install --save popper.js
 npm install --save bootstrap
-npm run postinstall
 ```
 
 ## Start Docker Container
