@@ -132,6 +132,30 @@ function createPayTicketSub() {
     })
 }
 
+//Create Special Ticket Sub
+function createSpecialTicketSub() {
+    specialTicketSub = new BrowserWindow({
+        parent: mainWindow,
+        width: 400,
+        height: 300,
+        webPreferences: {
+            nodeIntegration: true
+        }
+    });
+    specialTicketSub.setMenuBarVisibility(true)
+    //Load html into window
+    specialTicketSub.loadURL(url.format({
+        pathname: path.join(__dirname, 'app/windows/specialTicketSub.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+
+    //Quit app when payTicketSub closed
+    specialTicketSub.on('closed', () => {
+        specialTicketSub = null   
+    })
+}
+
 //Initialize application
 app.on('ready', () => {
     createMainWindow()
@@ -176,6 +200,18 @@ app.on('ready', () => {
     })
 
     //Pay Ticket Message Box
+    ipcMain.on('send:special', (event) => {
+        createSpecialTicketSub()
+        // const options = {
+        //     type: 'info',
+        //     title: 'Pay Ticket',
+        //     message: 'Functionality not yet programmed!',
+        //     buttons: ['Ok']
+        // }
+        // dialog.showMessageBox(null, options)
+    })
+
+    //Pay Ticket Message Box
     ipcMain.on('send:lost', (event) => {
         const options = {
             type: 'info',
@@ -200,6 +236,11 @@ app.on('ready', () => {
     //Adjust window size
     ipcMain.on('window:resize', (event, arg) => {
         payTicketSub.setSize(400, arg)
+    });
+
+    //Adjust window size
+    ipcMain.on('window:resize-special', (event, arg) => {
+        specialTicketSub.setSize(arg, 300)
     });
 })
 

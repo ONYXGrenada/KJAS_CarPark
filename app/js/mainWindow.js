@@ -13,7 +13,7 @@ ipcRenderer.on('send:user', (event, user) => {
 
 //Listen for Generate Ticket Button and generate ticket
 document.querySelector('#btnGenerateTicket').addEventListener('click', async () => {
-    let ticket = await dbconnection.createTicket(userInfo.username)
+    let ticket = await dbconnection.createTicket(userInfo.username, 'hourly')
     if (ticket.ticketNumber) {
         //Pop up dialog box displaying ticket number
         ipcRenderer.send('send:ticket', ticket)
@@ -22,6 +22,11 @@ document.querySelector('#btnGenerateTicket').addEventListener('click', async () 
     } else {
         console.log('Something went very wrong!')
     }
+})
+
+//Listen for Special Ticket Button
+document.querySelector('#btnSpecialTicket').addEventListener('click', async () => {
+    ipcRenderer.send('send:special')
 })
 
 //Listen for Pay Ticket Button and close ticket after payment (How to handle Bar Code Scanner?)
