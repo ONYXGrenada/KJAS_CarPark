@@ -41,6 +41,7 @@ CREATE TABLE IF	NOT EXISTS `tickets`
 	`description` VARCHAR ( 25 ),
 	`createdDate` DATETIME DEFAULT CURRENT_TIMESTAMP,
 	`closedDate` DATETIME,
+	`noOfVisits` INTEGER,
 	`status` VARCHAR ( 25 ),
 	`ticketCost` FLOAT,
 	`balance` FLOAT,
