@@ -71,11 +71,12 @@ function insertUser(username, password, firstName, lastName) {
 function createTicket(username, ticketType) {
     return new Promise((resolve, reject) => {
         //Checks to see if ticket type exists 
-        connection.query('SELECT id, unitCost, displayName FROM ticketType WHERE ticketType = ? AND status = ? ORDER BY id Desc LIMIT 1', [ticketType, 'active'], function(err, result) {
+        connection.query('SELECT id, unitCost, displayName FROM ticketType WHERE id = ? AND status = ? ORDER BY id Desc LIMIT 1', [ticketType, 'active'], function(err, result) {
             if (err) {
                 reject('Ticket Type not found - Error: ' + result.message)
-            } if (result.length > 0){
-                connection.query('INSERT INTO tickets (ticketType, description, status, rate, username) VALUES (?,?,?,?,?)', [ticketType, result[0].displayName, 'open', result[0].unitCost, username], function(err) {
+            }
+            if (result.length > 0){
+                connection.query('INSERT INTO tickets (ticketType, description, status, username) VALUES (?,?,?,?)', [ticketType, result[0].displayName, 'open', username], function(err) {
                     if (err) {
                         reject('Error: ' + err.message)
                     } else {
@@ -130,7 +131,7 @@ function createSpecialTicket(username, ticketType, vehicleRegistration, startDat
                         reject('Error: ' + err.message)
                     } else {
                         //Return last created ticket number to main program
-                        connection.query('SELECT ticketNumber, vehicleRegistration, createdDate, description FROM specialTickets WHERE username = ? ORDER BY id Desc LIMIT 1', [username], function(err, result) {
+                        connection.query('SELECT vehicleRegistration, createdDate, description FROM specialTickets WHERE username = ? ORDER BY id Desc LIMIT 1', [username], function(err, result) {
                             if (err) {
                                 reject('Error: ' + err.message)
                             } else {
@@ -154,7 +155,8 @@ function createSpecialTicket(username, ticketType, vehicleRegistration, startDat
 function getTicket(ticketNumber) {
     return new Promise((resolve, reject) => {
         //Select last created ticket for the current user 
-        connection.query('SELECT * FROM tickets WHERE ticketNumber = ? ORDER BY id Desc LIMIT 1', [ticketNumber], function(err, result) {
+        // connection.query('SELECT * FROM tickets WHERE ticketNumber = ? ORDER BY id Desc LIMIT 1', [ticketNumber], function(err, result) {
+        connection.query('SELECT tickets.*, tickettype.unitCost as "rate" FROM tickets, tickettype WHERE ticketNumber = ? and tickets.ticketType = tickettype.id ORDER BY id Desc LIMIT 1 ', [ticketNumber], function(err, result) {
             if (err) {
                 reject('Error: ' + err.message)
             } else {
@@ -207,7 +209,7 @@ function createTicketType(ticketType, unitCost, username) {
 function createReceipt(ticketID) {
     return new Promise((resolve, reject) => {
         //Checks to see if ticket exists in database
-        connection.query('SELECT ticketNumber, ticketType, createdDate, closedDate, status, rate, ticketCost, balance, username FROM tickets WHERE id = ? ORDER BY id Desc LIMIT 1', [ticketID], function(err, result) {
+        connection.query('SELECT tickets.ticketNumber, tickets.ticketType, tickets.createdDate, tickets.closedDate, tickets.status, tickettype.unitCost as "rate", tickets.ticketCost, tickets.balance, tickets.username FROM tickets, tickettype WHERE tickets.ticketType = tickettype.id and tickets.id = ? ORDER BY id Desc LIMIT 1', [ticketID], function(err, result) {
             if (err) {
                 reject('Cannot create receipt - Error: ' + err.message)
             } else {

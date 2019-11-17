@@ -18,20 +18,36 @@ CREATE TABLE IF NOT EXISTS `users` (
     `lastLogin` DATETIME, 
     PRIMARY KEY (`id`) );
 
-CREATE TABLE IF NOT EXISTS `tickets` (
-    `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT, 
-    `ticketNumber` VARCHAR(25), 
-    `ticketType` VARCHAR(25),
-    `description` VARCHAR(25),
-    `createdDate` DATETIME DEFAULT CURRENT_TIMESTAMP, 
-    `closedDate` DATETIME, 
-    `status` VARCHAR(25), 
-    `rate` FLOAT,
-    `noOfVisits` SMALLINT UNSIGNED,
-    `ticketCost` FLOAT, 
-    `balance` FLOAT,
-    `username` VARCHAR(25),
-    PRIMARY KEY(`id`) );
+-- CREATE TABLE IF NOT EXISTS `tickets` (
+--     `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+--     `ticketNumber` VARCHAR(25),
+--     `ticketType` VARCHAR(25),
+--     `description` VARCHAR(25),
+--     `createdDate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+--     `closedDate` DATETIME,
+--     `status` VARCHAR(25),
+--     `rate` FLOAT,
+--     `noOfVisits` SMALLINT UNSIGNED,
+--     `ticketCost` FLOAT,
+--     `balance` FLOAT,
+--     `username` VARCHAR(25),
+--     PRIMARY KEY(`id`) );
+
+CREATE TABLE IF	NOT EXISTS `tickets`
+(
+	`id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+	`ticketNumber` VARCHAR ( 25 ),
+	`ticketType` INTEGER,
+	`description` VARCHAR ( 25 ),
+	`createdDate` DATETIME DEFAULT CURRENT_TIMESTAMP,
+	`closedDate` DATETIME,
+	`status` VARCHAR ( 25 ),
+	`ticketCost` FLOAT,
+	`balance` FLOAT,
+	`username` VARCHAR ( 25 ),
+	PRIMARY KEY ( `id` )
+	);
+
 
 CREATE TABLE IF NOT EXISTS `specialTickets` (
     `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT, 

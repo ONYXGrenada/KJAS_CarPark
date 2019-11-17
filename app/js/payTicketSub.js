@@ -48,8 +48,10 @@ document.querySelector('#txtTicketNumber').addEventListener('keyup', async(e) =>
 
         document.getElementById('sTime').innerHTML = "Enter Time: " + displaySTime
         document.getElementById('eTime').innerHTML = "Exit Time: " + displayETime
-        document.getElementById('duration').innerHTML = "Duration: " + ticketDuration.day + " day(s) " + ticketDuration.hour + " hour(s) " + ticketDuration.minute + " mintue(s) " + ticketDuration.seconds + " second(s)" 
-        document.getElementById('tType').innerHTML = "Ticket Type: " + ticket.ticketType
+        // document.getElementById('duration').innerHTML = "Duration: " + ticketDuration.day + " day(s) " + ticketDuration.hour + " hour(s) " + ticketDuration.minute + " minute(s) " + ticketDuration.seconds + " second(s)"
+        // document.getElementById('duration').innerHTML = "Duration: " + ticketDuration.day + " : " + ticketDuration.hour + " : " + ticketDuration.minute
+        document.getElementById('duration').innerHTML = "Duration: " + formatTimeDifference(ticketDuration)
+        document.getElementById('tType').innerHTML = "Ticket Type: " + ticket.description
         document.getElementById('tCost').innerHTML = "Cost: " + formatter.format(ticketCost)
 
         //calculate cost (need ticket create date, rate and now)
@@ -61,6 +63,50 @@ var formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
 });
+
+function formatTimeDifference(ticketDuration)
+{
+    var timeElapsed = "";
+
+    if (ticketDuration.day > 0)
+    {
+        if(ticketDuration.day == 1)
+        {
+            timeElapsed += ticketDuration.day + " day ";
+        }
+        else
+        {
+            timeElapsed += ticketDuration.day + " days ";
+        }
+    }
+    if (ticketDuration.hour > 0)
+    {
+        if(ticketDuration.hour == 1)
+        {
+            timeElapsed += ticketDuration.hour + " hour ";
+        }
+        else
+        {
+            timeElapsed += ticketDuration.hour + " hours ";
+        }
+    }
+
+    if (ticketDuration.minute > 0)
+    {
+        if(ticketDuration.minute == 1)
+        {
+            timeElapsed += ticketDuration.minute + " minute ";
+        }
+        else
+        {
+            timeElapsed += ticketDuration.minute + " minutes ";
+        }
+    }
+
+
+    return timeElapsed;
+
+}
 
 function convertMS( milliseconds ) {
     var day, hour, minute, seconds;
