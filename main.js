@@ -132,6 +132,30 @@ function createPayTicketSub() {
     })
 }
 
+//Create Lost Ticket Sub
+function createLostTicketSub() {
+    lostTicketSub = new BrowserWindow({
+        parent: mainWindow,
+        width: 400,
+        height: 150,
+        webPreferences: {
+            nodeIntegration: true
+        }
+    });
+    lostTicketSub.setMenuBarVisibility(true)
+    //Load html into window
+    lostTicketSub.loadURL(url.format({
+        pathname: path.join(__dirname, 'app/windows/lostTicketSub.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+
+    //Quit app when lostTicketSub closed
+    lostTicketSub.on('closed', () => {
+        lostTicketSub = null   
+    })
+}
+
 //Initialize application
 app.on('ready', () => {
     createMainWindow()
@@ -166,24 +190,18 @@ app.on('ready', () => {
     //Pay Ticket Message Box
     ipcMain.on('send:pay', (event) => {
         createPayTicketSub()
+    })
+
+    //Lost Ticket Message Box
+    ipcMain.on('send:lost', (event) => {
+        createLostTicketSub()
         // const options = {
         //     type: 'info',
-        //     title: 'Pay Ticket',
+        //     title: 'Lost Ticket',
         //     message: 'Functionality not yet programmed!',
         //     buttons: ['Ok']
         // }
         // dialog.showMessageBox(null, options)
-    })
-
-    //Pay Ticket Message Box
-    ipcMain.on('send:lost', (event) => {
-        const options = {
-            type: 'info',
-            title: 'Lost Ticket',
-            message: 'Functionality not yet programmed!',
-            buttons: ['Ok']
-        }
-        dialog.showMessageBox(null, options)
     })
 
     //Adjust window size
