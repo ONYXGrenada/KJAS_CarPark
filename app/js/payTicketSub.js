@@ -36,10 +36,10 @@ document.querySelector('#txtTicketNumber').addEventListener('keyup', async(e) =>
         let displayETime = endTime.toLocaleDateString("en-US", dateOptions)
 
         switch(ticket.ticketType){
-            case "standard":
+            case "1":
                    break;
 
-            case "monthly":
+            case "2":
                 break;
         }
 
