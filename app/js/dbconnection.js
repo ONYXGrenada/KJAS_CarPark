@@ -118,6 +118,108 @@ function createTicket(username, ticketType) {
     })
 }
 
+// //Create Ticket function to generate ticket in the ticket table
+// function createTicket(username, ticketType) {
+//     return new Promise((resolve, reject) => {
+//         //Checks to see if ticket type exists
+//         connection.query('SELECT id, unitCost, displayName FROM ticketType WHERE id = ? AND status = ? ORDER BY id Desc LIMIT 1', [ticketType, 'active'], function(err, result) {
+//             if (err) {
+//                 reject('Ticket Type not found - Error: ' + result.message)
+//             }
+//             if (result.length > 0){
+//                 connection.query('INSERT INTO tickets (ticketType, description, status, username) VALUES (?,?,?,?)', [ticketType, result[0].displayName, 'open', username], function(err) {
+//                     if (err) {
+//                         reject('Error: ' + err.message)
+//                     } else {
+//                         //Select last created ticket for the current user
+//                         connection.query('SELECT id FROM tickets WHERE username = ? ORDER BY id Desc LIMIT 1', [username], function(err, result) {
+//                             if (err) {
+//                                 reject('Error: ' + err.message)
+//                             } else {
+//                                 if (result) {
+//                                     //Create ticket number for last created ticket
+//                                     connection.query('UPDATE tickets SET ticketNumber = ? WHERE id = ?', [result[0].id, result[0].id], function(err) {
+//                                         if (err) {
+//                                             reject('Error: ' + err.message)
+//                                         }
+//                                         else {
+//                                             //Return last created ticket number to main program
+//                                             connection.query('SELECT ticketNumber, createdDate, description FROM tickets WHERE username = ? ORDER BY id Desc LIMIT 1', [username], function(err, result) {
+//                                                 if (err) {
+//                                                     reject('Error: ' + err.message)
+//                                                 } else {
+//                                                     if (result.length == 1) {
+//                                                         resolve(result[0])
+//                                                     } else {
+//                                                         resolve('Database Error')
+//                                                     }
+//                                                 }
+//                                             })
+//                                         }
+//                                     })
+//                                 } else {
+//                                     resolve('Database Error')
+//                                 }
+//                             }
+//                         })
+//                     }
+//                 })
+//             }
+//         })
+//     })
+// }
+
+//Create Monthly Ticket function to generate ticket in the ticket table
+function createMonthlyTicket(username, ticketType, registrationNumber) {
+    return new Promise((resolve, reject) => {
+        //Checks to see if ticket type exists
+        connection.query('SELECT id, unitCost, displayName FROM ticketType WHERE id = ? AND status = ? ORDER BY id Desc LIMIT 1', [ticketType, 'active'], function(err, result) {
+            if (err) {
+                reject('Ticket Type not found - Error: ' + result.message)
+            }
+            if (result.length > 0){
+                connection.query('INSERT INTO tickets (ticketType, description, status, username, noOfVisits) VALUES (?,?,?,?,?)', [ticketType, result[0].displayName, 'open', username, 0], function(err) {
+                    if (err) {
+                        reject('Error: ' + err.message)
+                    } else {
+                        //Select last created ticket for the current user
+                        connection.query('SELECT id, noOfVisits FROM tickets WHERE username = ? ORDER BY id Desc LIMIT 1', [username], function(err, result) {
+                            if (err) {
+                                reject('Error: ' + err.message)
+                            } else {
+                                if (result) {
+                                    //Create ticket number for last created ticket
+                                    connection.query('UPDATE tickets SET ticketNumber = ?, noOfVisits = ? WHERE id = ?', [registrationNumber, parseInt(result[0].noOfVisits)+1, result[0].id], function(err) {
+                                        if (err) {
+                                            reject('Error: ' + err.message)
+                                        }
+                                        else {
+                                            //Return last created ticket number to main program
+                                            connection.query('SELECT ticketNumber, createdDate, description FROM tickets WHERE username = ? ORDER BY id Desc LIMIT 1', [username], function(err, result) {
+                                                if (err) {
+                                                    reject('Error: ' + err.message)
+                                                } else {
+                                                    if (result.length == 1) {
+                                                        resolve(result[0])
+                                                    } else {
+                                                        resolve('Database Error')
+                                                    }
+                                                }
+                                            })
+                                        }
+                                    })
+                                } else {
+                                    resolve('Database Error')
+                                }
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    })
+}
+
 //Create Ticket function to generate special ticket in the special ticket table
 function createSpecialTicket(username, ticketType, vehicleRegistration, startDate, endDate) {
     return new Promise((resolve, reject) => {
@@ -237,6 +339,7 @@ function createReceipt(ticketID) {
   module.exports.login = login
   module.exports.insertUser = insertUser
   module.exports.createTicket = createTicket
+  module.exports.createMonthlyTicket = createMonthlyTicket
   module.exports.createSpecialTicket = createSpecialTicket
   module.exports.getTicket = getTicket
   module.exports.createTicketType = createTicketType

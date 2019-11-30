@@ -24,6 +24,19 @@ document.querySelector('#btnGenerateTicket').addEventListener('click', async () 
     }
 })
 
+//Listen for Generate Monthly Ticket Button and generate ticket
+document.querySelector('#btnGenerateMonthlyTicket').addEventListener('click', async () => {
+    let ticket = await dbconnection.createMonthlyTicket(userInfo.username, 2, "P1234")
+    if (ticket.ticketNumber) {
+        //Pop up dialog box displaying ticket number
+        ipcRenderer.send('send:ticket', ticket)
+        // Placeholder for print function or code
+        console.log('This is where we print the ticket# ' + ticket.ticketNumber)
+    } else {
+        console.log('Something went very wrong!')
+    }
+})
+
 //Listen for Special Ticket Button
 document.querySelector('#btnSpecialTicket').addEventListener('click', async () => {
     ipcRenderer.send('send:special')
