@@ -7,9 +7,11 @@ Create and switch to new branch for specific issue:
 ```bash
 git checkout –b <Descriptive-Branch-Name> 
 ```
+
 Switch to existing brank:
 ```bash
 git checkout <Descriptive-Branch-Name>
+git pull
 ```
 
 Commit changes to branch: 
@@ -43,4 +45,11 @@ Update Working Branch with changes from Master Branch
 ```bash
 git pull origin master
 git push
+```
+
+Update Existing Branch discarding your changes
+```bash
+git fetch --all
+git reset --hard origin/<Descriptive-Branch-Name>
+git pull
 ```
