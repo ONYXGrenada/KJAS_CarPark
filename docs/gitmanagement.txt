@@ -7,16 +7,19 @@ Create and switch to new branch for specific issue:
 ```bash
 git checkout –b <Descriptive-Branch-Name> 
 ```
+
 Switch to existing brank:
 ```bash
 git checkout <Descriptive-Branch-Name>
+git pull
 ```
 
 Commit changes to branch: 
 ```bash
 git status (to see files) 
 git add <filename> (for specific files) | git add .  (for all files) 
-git commit –m "descriptive commit message" 
+git commit –m "descriptive commit message"
+git push 
 ```
 
 Share changes on GitHub: 
@@ -43,4 +46,11 @@ Update Working Branch with changes from Master Branch
 ```bash
 git pull origin master
 git push
+```
+
+Update Existing Branch discarding your changes
+```bash
+git fetch --all
+git reset --hard origin/<Descriptive-Branch-Name>
+git pull
 ```
