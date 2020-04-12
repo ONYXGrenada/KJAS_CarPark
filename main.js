@@ -10,6 +10,7 @@ let loginWindow;
 let printWindow;
 let receiptWindow;
 let payTicketSub;
+let lostTicketSub;
 
 // Create mainWindow
 function createMainWindow() {
@@ -109,9 +110,9 @@ function createPrintWindow(templateUrl, data) {
 }
 
 // Create receiptWindow
-function createReceiptWindow(templateUrl, data) {
+function createReceiptWindow(templateUrl, data, parent) {
     receiptWindow = new BrowserWindow({
-        parent: mainWindow,
+        parent: parent,
         width: 200,
         height: 400,
         webPreferences: {
@@ -227,9 +228,9 @@ app.on('ready', () => {
     })
 
     // Receipt Message Box
-    ipcMain.on('send:receipt', (event, receipt) => {
+    ipcMain.on('send:receipt', (event, receipt, parentWindow) => {
         // Generate receipt in print window
-        createReceiptWindow('app/templates/receipt.html', receipt)
+        createReceiptWindow('app/templates/receipt.html', receipt, parentWindow)
         const options = {
             type: 'info',
             title: 'Receipt',
