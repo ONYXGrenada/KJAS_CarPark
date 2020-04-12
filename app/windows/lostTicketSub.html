@@ -6,13 +6,15 @@
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <title>Lost Ticket</title>
 </head>
-<body>
-    <div class="container">
+<body onload="getLostFee()">
+    <div class="container text-center">
         <h1 class="h1 font-weight-normal">
             Lost Ticket
         </h1>
         <br>
-        A lost ticket incurs a default fee of:
+        The lost ticket charge is: $<a id="lostTicketFee"></a>
+        <br>
+        <button class="btn btn-info btn-block" id="btnGenerateTicket">Generate Ticket</button>
     </div>
     <script src="../../app/js/lostTicketSub.js"></script>
     <script>let $ = require('jquery');</script>

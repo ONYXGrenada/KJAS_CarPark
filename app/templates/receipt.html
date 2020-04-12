@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../app/css/receipt.css">
+    <title>Ticket</title>
+</head>
+<body>
+    <div class="container" id="receipt">
+        <div class="logo"></div>
+        <div class="text-center" id="company">
+            <address>
+                <strong>Generic Company</strong>
+                address line 1 <br>
+                address line 2 <br>
+                <abbr title="Phone">P: </abbr>(473) 000-0000
+            </address>
+        </div>
+        <div class="" id="body">
+            <p id="receiptDetails"><span id="receiptNumber">Receipt#: <br></span>
+            <span id="receiptDate">Date: <br></span>
+            <span id="receiptTime">Time: <br></span>
+            </p>
+            <div id="barcode"></div>
+        </div>
+        <div class="" id="footer">
+            <p class="legal">
+                <small>
+                    <br>
+                    <strong>
+                        Thank you for your business! <br>
+                    </strong>
+                    The hourly rate is <span id="hourlyRate">{rate}</span><br>
+                    Lost tickets will result in a full day charge of $18.00
+                </small>
+            </p>
+        </div>
+    </div>
+    <script src='../../app/js/receipt.js'></script>
+    <script>let $ = require('jquery');</script>
+    <script>require('popper.js');</script>
+    <script>require('bootstrap');</script>
+</body>
+</html>

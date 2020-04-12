@@ -78,4 +78,6 @@ CREATE TABLE IF NOT EXISTS `ticketType` (
 
 -- Insert default data into tables
 INSERT INTO `users` ( `username`, `password`, `firstName`, `lastName` ) VALUES ( 'admin', 'admin', 'Admin', 'User' );
-INSERT INTO `ticketType` ( `ticketType`, `unitCost`, `status`, `displayName`, `description`, `username` ) VALUES ('hourly', 2.00, 'active', 'Hourly', 'Ticket for regular hourly usage.', 'admin');
+INSERT INTO `ticketType` ( `ticketType`, `unitCost`, `status`, `displayName`, `description`, `username` ) VALUES 
+    ('hourly', 2.00, 'active', 'Hourly', 'Ticket for regular hourly usage.', 'admin'),
+    ('lost', 25.00, 'active', 'Lost Ticket', 'Lost ticket type.', 'admin');

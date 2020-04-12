@@ -1,5 +1,4 @@
 const {ipcRenderer} = require('electron')
-//const dbhelper = require('../../app/js/dbhelper')
 const dbconnection = require('../../app/js/dbconnection')
 
 let userInfo
@@ -8,7 +7,7 @@ let welcomeMessage = document.querySelector('#welcome')
 //Display welcome message
 ipcRenderer.on('send:user', (event, user) => {
     welcomeMessage.innerHTML = 'Welcome ' + user.firstName + ' ' + user.lastName
-    userInfo=user
+    userInfo = user
 })
 
 //Listen for Generate Ticket Button and generate ticket
@@ -31,5 +30,5 @@ document.querySelector('#btnPayTicket').addEventListener('click', () => {
 
 //Listen for Lost Ticket Button
 document.querySelector('#btnLostTicket').addEventListener('click', () => {
-    ipcRenderer.send('send:lost')
+    ipcRenderer.send('send:lost', userInfo)
 })

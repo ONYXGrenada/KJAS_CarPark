@@ -1,10 +1,10 @@
 const {ipcRenderer} = require('electron')
-//const dbhelper = require('../../app/js/dbhelper')
+
 const connection = require('../../app/js/dbconnection')
 
 
 //Listen for Ticket Number
-document.querySelector('#txtTicketNumber').addEventListener('keyup', async(e) => {
+document.querySelector('#txtTicketNumber').addEventListener('keyup', async (e) => {
     e.preventDefault()
     console.log("e.keycode " + e.keyCode)
     if (e.keyCode == 13) {
@@ -21,8 +21,6 @@ document.querySelector('#txtTicketNumber').addEventListener('keyup', async(e) =>
             document.querySelector('#customerTicket').setAttribute("hidden", true)
             ipcRenderer.send('window:resize', 150)
         }
-
-
         //Set ticket values
         let endTime = new Date()
         let ticketDuration = convertMS(endTime - ticket.createdDate)
@@ -34,12 +32,15 @@ document.querySelector('#txtTicketNumber').addEventListener('keyup', async(e) =>
         document.getElementById('duration').innerHTML = "Duration: " + ticketDuration.day + " day(s) " + ticketDuration.hour + " hour(s) " + ticketDuration.minute + " mintue(s) " + ticketDuration.seconds + " second(s)" 
         document.getElementById('tType').innerHTML = "Ticket Type: " + ticket.ticketType
         document.getElementById('tCost').innerHTML = "Cost: " + ticketCost
-
         //calculate cost (need ticket create date, rate and now)
         console.log(ticket.id + " this is where the ticket is supposed to print")
     }
 })
 
+//Listen for Pay Ticket Button and close ticket after payment (How to handle Bar Code Scanner?)
+document.querySelector('#btnPayTicket').addEventListener('click', () => {
+    ipcRenderer.send('send:pay')
+})
 
 function convertMS( milliseconds ) {
     var day, hour, minute, seconds;
