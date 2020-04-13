@@ -174,13 +174,18 @@ app.on('ready', () => {
     })
 
     // Ticket Print Window
-    ipcMain.on('send:ticket', (event, ticket, parentWindow) => {
+    ipcMain.on('send:ticket', (event, data) => {
         // Generate ticket in print window
-        createPrintWindow('app/templates/ticket.html', ticket, parentWindow)
+        if (data.parentWindow == 'mainWindow') {
+            createPrintWindow('app/templates/receipt.html', data.ticket, mainWindow)
+        } else {
+            // Won't do much
+            createPrintWindow('app/templates/receipt.html', data.ticket, data.parentWindow)
+        }
         const options = {
             type: 'info',
             title: 'Ticket',
-            message: 'Please check the printer for ticket# ' + ticket.ticketNumber,
+            message: 'Please check the printer for ticket# ' + data.ticket.ticketNumber,
             buttons: ['Ok']
         }
         dialog.showMessageBox(null, options)

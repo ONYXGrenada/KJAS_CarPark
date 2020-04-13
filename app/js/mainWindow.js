@@ -14,8 +14,12 @@ ipcRenderer.on('send:user', (event, user) => {
 document.querySelector('#btnGenerateTicket').addEventListener('click', async () => {
     let ticket = await dbconnection.createTicket(userInfo.username, 'hourly')
     if (ticket.ticketNumber) {
+        let data = {
+            ticket: ticket,
+            parentWindow: 'mainWindow'
+        }
         //Pop up dialog box displaying ticket number
-        ipcRenderer.send('send:ticket', ticket, 'mainWindow')
+        ipcRenderer.send('send:ticket', data)
         // Placeholder for print function or code
         console.log('This is where we print the ticket# ' + ticket.ticketNumber)
     } else {
