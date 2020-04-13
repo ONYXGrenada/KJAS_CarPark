@@ -6,22 +6,24 @@
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <title>Lost Ticket</title>
 </head>
-<body onload="getLostFee()">
+<body>
     <div class="container text-center">
         <h1 class="h1 font-weight-normal">
             Lost Ticket
         </h1>
-        The lost ticket charge is: $<a id="lostTicketFee"></a>
+        The lost ticket charge is: $<a id="txtLostTicketFee"></a>
         <br/>
-        <label for="paymentMethod">Select Payment Method</label>
-        <select class="form-control" id="txtPaymentMethod">
-            <option value="cash">Cash</option>
-            <option value="cheque">Cheque</option>
-        </select>
-        <input type="text" class="form-control" id="txtChequeNumber" placeholder="Enter Cheque Number" hidden>
-        <input type="text" class="form-control" id="txtPaymentAmount" placeholder="Enter Payment Amount" required autofocus>
-        <button class="btn btn-info btn-block" id="btnPayTicket">Pay Ticket</button>
-        <p class="card-text" id="paymentReturn"></p>
+        <div id="collectPayment" class="card-body text-center">
+            <label for="paymentMethod">Select Payment Method</label>
+            <select class="form-control" id="txtPaymentMethod">
+                <option value="cash">Cash</option>
+                <option value="cheque">Cheque</option>
+            </select>
+            <input type="number" class="form-control" id="txtChequeNumber" placeholder="Enter Cheque Number" hidden>
+            <input type="number" class="form-control" id="txtPaymentAmount" placeholder="Enter Payment Amount" required autofocus>
+            <button class="btn btn-info btn-block" id="btnPayTicket" disabled>Pay Ticket</button>
+            <p class="card-text" id="txtPaymentReturn"></p>
+        </div>  
     </div>
     <!-- <script src="../../app/js/lostTicketSub.js"></script> -->
     <script>let $ = require('jquery');</script>

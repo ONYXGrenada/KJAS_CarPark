@@ -17,14 +17,21 @@ document.querySelector('#txtTicketNumber').addEventListener('keyup', async (e) =
         let ticket = await connection.getTicket(ticketNumber, userInfo.username)
 
         if (ticket.id > 0) {
+            let data = {
+                height: 600,
+                window: 'payTicketSub'
+            }
             document.querySelector('#customerTicket').removeAttribute('hidden')
-            //document.querySelector('#customerTicket').setAttribute("hidden", false)
-            ipcRenderer.send('window:resize', 600)
+            ipcRenderer.send('window:resize', data)
         }
 
         else {
+            let data = {
+                height: 150,
+                window: 'payTicketSub'
+            }
             document.querySelector('#customerTicket').setAttribute("hidden", true)
-            ipcRenderer.send('window:resize', 150)
+            ipcRenderer.send('window:resize', data)
         }
         //Set ticket values
         let endTime = new Date()

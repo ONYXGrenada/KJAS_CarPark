@@ -8,7 +8,6 @@ process.env.NODE_ENV = 'development';
 let mainWindow;
 let loginWindow;
 let printWindow;
-// let receiptWindow;
 let payTicketSub;
 let lostTicketSub;
 
@@ -71,9 +70,9 @@ function createLoginWindow() {
 }
 
 // Create printWindow
-function createPrintWindow(templateUrl, data, parent) {
+function createPrintWindow(templateUrl, data, parentWindow) {
     printWindow = new BrowserWindow({
-        parent: parent,
+        parent: parentWindow,
         width: 200,
         height: 400,
         webPreferences: {
@@ -138,7 +137,7 @@ function createLostTicketSub() {
     lostTicketSub = new BrowserWindow({
         parent: mainWindow,
         width: 400,
-        height: 400,
+        height: 300,
         webPreferences: {
             nodeIntegration: true
         }
@@ -167,12 +166,12 @@ app.on('ready', () => {
         mainWindow.show()
         mainWindow.webContents.send('send:user', user)
         loginWindow.close()
-    });
+    })
 
     // Get failed login
     ipcMain.on('login:failure', (event, close) => {
         app.quit()
-    });
+    })
 
     // Ticket Print Window
     ipcMain.on('send:ticket', (event, ticket, parentWindow) => {
@@ -188,13 +187,20 @@ app.on('ready', () => {
     })
 
     // Receipt Print Window
-    ipcMain.on('send:receipt', (event, receipt, parentWindow) => {
-        // Generate receipt in print window
-        createPrintWindow('app/templates/receipt.html', receipt, parentWindow)
+    ipcMain.on('send:receipt', (event, data) => {
+        // Trying to properly set the parent windows
+        if (data.parentWindow == 'lostTicketSub') {
+            createPrintWindow('app/templates/receipt.html', data.receipt, lostTicketSub)
+        } else if (data.parentWindow == 'payTicketSub') {
+            createPrintWindow('app/templates/receipt.html', data.receipt, payTicketSub)
+        } else {
+            // Won't do much
+            createPrintWindow('app/templates/receipt.html', data.receipt, data.parentWindow)
+        }
         const options = {
             type: 'info',
             title: 'Receipt',
-            message: 'Please check the printer for receipt# ' + receipt.receiptNumber,
+            message: 'Please check the printer for receipt# ' + data.receipt.receiptNumber,
             buttons: ['Ok']
         }
         dialog.showMessageBox(null, options)
@@ -219,9 +225,15 @@ app.on('ready', () => {
     })
 
     // Adjust window size
-    ipcMain.on('window:resize', (event, arg) => {
-        payTicketSub.setSize(400, arg)
-    });
+    ipcMain.on('window:resize', (event, data) => {
+        if (data.window == 'lostTicketSub') {
+            lostTicketSub.setSize(400, data.height)
+        } else if (data.window == 'payTicketSub') {
+            payTicketSub.setSize(400,data.height)
+        } else {
+            // Nothing yet
+        }      
+    })
 })
 
 // Quit app when all windows are closed
