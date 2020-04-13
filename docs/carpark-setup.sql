@@ -50,7 +50,8 @@ CREATE TABLE IF NOT EXISTS `specialTickets` (
     PRIMARY KEY(`id`) );
 
 CREATE TABLE IF NOT EXISTS `receipts` (
-    `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT, 
+    `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+    `receiptNumber` VARCHAR(25), --New addition to handle receipts without tickets (Lost tickets) 
     `ticketNumber` VARCHAR(25), 
     `ticketType` VARCHAR(25),
     `createdDate` DATETIME DEFAULT CURRENT_TIMESTAMP, 

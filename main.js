@@ -8,7 +8,7 @@ process.env.NODE_ENV = 'development';
 let mainWindow;
 let loginWindow;
 let printWindow;
-let receiptWindow;
+// let receiptWindow;
 let payTicketSub;
 let lostTicketSub;
 
@@ -71,9 +71,9 @@ function createLoginWindow() {
 }
 
 // Create printWindow
-function createPrintWindow(templateUrl, data) {
+function createPrintWindow(templateUrl, data, parent) {
     printWindow = new BrowserWindow({
-        parent: mainWindow,
+        parent: parent,
         width: 200,
         height: 400,
         webPreferences: {
@@ -109,46 +109,6 @@ function createPrintWindow(templateUrl, data) {
     })
 }
 
-// Create receiptWindow
-function createReceiptWindow(templateUrl, data, parent) {
-    receiptWindow = new BrowserWindow({
-        parent: parent,
-        width: 200,
-        height: 400,
-        webPreferences: {
-            nodeIntegration: true
-        },
-        show: false
-    });
-    receiptWindow.setMenuBarVisibility(false)
-    // Load html into window
-    receiptWindow.loadURL(url.format({
-        pathname: path.join(__dirname, templateUrl),
-        protocol: 'file:',
-        slashes: true
-    }));
-    // Print html file
-    receiptWindow.webContents.on('did-finish-load', () => {
-        // Send print data to template
-        receiptWindow.webContents.send('send:data', data)
-        // Print the contents of the HTML Template
-        receiptWindow.webContents.print({
-            silent: false
-        }, (success) => {
-            if (success) {
-                receiptWindow.close()
-            } else {
-                console.log(success.message)
-            }
-        })
-    })
-    // Clean up on close
-    receiptWindow.on('closed', () => {
-        receiptWindow = null
-    })
-}
-
-
 // Create Pay Ticket Sub
 function createPayTicketSub() {
     payTicketSub = new BrowserWindow({
@@ -178,7 +138,7 @@ function createLostTicketSub() {
     lostTicketSub = new BrowserWindow({
         parent: mainWindow,
         width: 400,
-        height: 200,
+        height: 400,
         webPreferences: {
             nodeIntegration: true
         }
@@ -214,10 +174,10 @@ app.on('ready', () => {
         app.quit()
     });
 
-    // Ticket Message Box
-    ipcMain.on('send:ticket', (event, ticket) => {
+    // Ticket Print Window
+    ipcMain.on('send:ticket', (event, ticket, parentWindow) => {
         // Generate ticket in print window
-        createPrintWindow('app/templates/ticket.html', ticket)
+        createPrintWindow('app/templates/ticket.html', ticket, parentWindow)
         const options = {
             type: 'info',
             title: 'Ticket',
@@ -227,10 +187,10 @@ app.on('ready', () => {
         dialog.showMessageBox(null, options)
     })
 
-    // Receipt Message Box
+    // Receipt Print Window
     ipcMain.on('send:receipt', (event, receipt, parentWindow) => {
         // Generate receipt in print window
-        createReceiptWindow('app/templates/receipt.html', receipt, parentWindow)
+        createPrintWindow('app/templates/receipt.html', receipt, parentWindow)
         const options = {
             type: 'info',
             title: 'Receipt',
@@ -241,8 +201,12 @@ app.on('ready', () => {
     })
 
     // Pay Ticket Window Trigger
-    ipcMain.on('send:pay', (event) => {
+    ipcMain.on('send:pay', (event, user) => {
         createPayTicketSub()
+        // Need to wait for the window to load before sending the user
+        payTicketSub.webContents.once('did-finish-load', () => {
+            payTicketSub.webContents.send('send:user', user)
+        })
     })
 
     // Lost Ticket Window Trigger

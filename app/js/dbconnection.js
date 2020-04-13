@@ -115,14 +115,14 @@ function createSpecialTicket(username, ticketType, vehicleRegistration, startDat
         // Checks to see if ticket type exists 
         connection.query('SELECT id, unitCost, displayName FROM ticketType WHERE ticketType = ? AND status = ? ORDER BY id Desc LIMIT 1', [ticketType, 'active'], function(err, result) {
             if (err) {
-                reject('Ticket Type not found - Error: ' + result.message)
+                reject('Ticket Type not found - Error: ' + err.message)
             } if (result.length > 0){
                 connection.query('INSERT INTO specialTickets (ticketType, vehicleRegistration, description, status, startDate, endDate, rate, username) VALUES (?,?,?,?,?,?,?)', [ticketType, vehicleRegistration, result[0].displayName, 'open', startDate, endDate, result[0].unitCost, username], function(err) {
                     if (err) {
                         reject('Error: ' + err.message)
                     } else {
                         // Return last created ticket number to main program
-                        connection.query('SELECT ticketNumber, vehicleRegistration, createdDate, description FROM specialTickets WHERE username = ? ORDER BY id Desc LIMIT 1', [username], function(err, result) {
+                        connection.query('SELECT vehicleRegistration, createdDate, description FROM specialTickets WHERE username = ? ORDER BY id Desc LIMIT 1', [username], function(err, result) {
                             if (err) {
                                 reject('Error: ' + err.message)
                             } else {
@@ -143,10 +143,10 @@ function createSpecialTicket(username, ticketType, vehicleRegistration, startDat
 }
 
 // Get Ticket based on ticket number
-function getTicket(ticketNumber) {
+function getTicket(ticketNumber, username) {
     return new Promise((resolve, reject) => {
         // Select last created ticket for the current user 
-        connection.query('SELECT * FROM tickets WHERE ticketNumber = ? ORDER BY id Desc LIMIT 1', [ticketNumber], function(err, result) {
+        connection.query('SELECT * FROM tickets WHERE ticketNumber = ? AND username = ? ORDER BY id Desc LIMIT 1', [ticketNumber, username], function(err, result) {
             if (err) {
                 reject('Error: ' + err.message)
             } else {
@@ -197,7 +197,7 @@ function createTicketType(ticketType, unitCost, username) {
 }
 
 // Retrieve Ticket Details
-function retrieveTicketInfo(ticketType) {
+function retrieveTicketTypeInfo(ticketType) {
     return new Promise((resolve, reject) => {
         connection.query('SELECT ticketType, unitCost, status, createdDate, displayName, description, username FROM ticketType WHERE ticketType = ?', [ticketType], function(err, result) {
             if (err) {
@@ -214,38 +214,118 @@ function retrieveTicketInfo(ticketType) {
 }
 
 // Create the Receipt
-function createReceipt(ticketID) {
+function createReceipt(ticketNumber, ticketStatus, ticketCost, receiptStatus, balance, amountPaid, amountDue, paymentMethod, chequeNumber, username) {
     return new Promise((resolve, reject) => {
         // Checks to see if ticket exists in database
-        connection.query('SELECT ticketNumber, ticketType, createdDate, closedDate, status, rate, ticketCost, balance, username FROM tickets WHERE id = ? ORDER BY id Desc LIMIT 1', [ticketID], function(err, result) {
+        connection.query('SELECT ticketNumber, ticketType, createdDate, closedDate, status, rate, ticketCost, balance, username FROM tickets WHERE ticketNumber = ? ORDER BY id Desc LIMIT 1', [ticketNumber], function(err, result) {
             if (err) {
                 reject('Cannot create receipt - Error: ' + err.message)
             } else {
-                // Create receipt code here
-                connection.query('UPDATE tickets SET closedDate = ?, status = ?, ticketCost = ?, balance = ? WHERE id = ?', [closedDate, 'closed', ticketCost, balance, ticketID], function(err) { 
-                    if (err) {
-                        reject('Cannot create receipt - Error: ' + err.message)
-                    } else {
-                        connection.query('INSERT INTO receipts (ticketNumber, ticketType, closedDate, status, ticketCost, amountPaid, balance, amountDue, paymentMethod, chequeNumber, username) VALUES (?,?,?,?,?,?,?,?,?,?,?)', [ticketNumber, ticketType, closedDate, 'paid', ticketCost, amountPaid, balance, amountDue, paymentMethod, chequeNumber, username], function(err) {
-                            if (err) {
-                                reject('Cannot create receipt - Error: ' + err.message)
-                            } else {
-                                resolve('Ticket has been successfully paid.')
-                            }
-                        })
-                    }
-                })                
+                if (result) {
+                    // Create receipt code here
+                    connection.query('UPDATE tickets SET status = ?, ticketCost = ?, balance = ? WHERE ticketNumber = ?', [ticketStatus, ticketCost, balance, ticketNumber], function(err) { 
+                        if (err) {
+                            reject('Cannot create receipt - Error: ' + err.message)
+                        } else {
+                            connection.query('INSERT INTO receipts (ticketNumber, ticketType, status, ticketCost, amountPaid, balance, amountDue, paymentMethod, chequeNumber, username) VALUES (?,?,?,?,?,?,?,?,?,?,?)', [ticketNumber, result[0].ticketType, receiptStatus, ticketCost, amountPaid, balance, amountDue, paymentMethod, chequeNumber, username], function(err) {
+                                if (err) {
+                                    reject('Cannot create receipt - Error: ' + err.message)
+                                } else {
+                                    connection.query('UPDATE receipts SET receiptNumber = LAST_INSERT_ID() WHERE id = LAST_INSERT_ID()', function(err) {
+                                        if (err) {
+                                            reject('Cannot use LAST_INSERT_ID() - Error: ' + err.message)
+                                        } else {
+                                            connection.query('SELECT * FROM receipts WHERE id = LAST_INSERT_ID()', function (err,result) {
+                                                if (err) {
+
+                                                } else {
+                                                    resolve(result[0])
+                                                }
+                                            })
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    })
+                } else {
+                    resolve('Database Error')
+                }                
             }
         })
     })
 }
-   
-  // connection.end();
 
-  module.exports.login = login
-  module.exports.insertUser = insertUser
-  module.exports.createTicket = createTicket
-  module.exports.createSpecialTicket = createSpecialTicket
-  module.exports.getTicket = getTicket
-  module.exports.createTicketType = createTicketType
-  module.exports.retrieveTicketInfo = retrieveTicketInfo
+// Create the Receipt for Lost Tickets
+function createLostTicketReceipt(receiptStatus, ticketCost, amountPaid, balance, amountDue, paymentMethod, chequeNumber, username) {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO receipts (status, ticketCost, amountPaid, balance, amountDue, paymentMethod, chequeNumber, username) VALUES (?,?,?,?,?,?,?,?)', [receiptStatus, ticketCost, amountPaid, balance, amountDue, paymentMethod, chequeNumber, username], function(err) {
+            if (err) {
+                reject('Cannot create receipt - Error: ' + err.message)
+            } else {
+                connection.query('UPDATE receipts SET receiptNumber = LAST_INSERT_ID() WHERE id = LAST_INSERT_ID()', function(err) {
+                    if (err) {
+                        reject('Cannot use LAST_INSERT_ID() - Error: ' + err.message)
+                    } else {
+                        connection.query('SELECT * FROM receipts WHERE id = LAST_INSERT_ID()', function (err,result) {
+                            if (err) {
+
+                            } else {
+                                resolve(result[0])
+                            }
+                        })
+                    }
+                })
+            }
+        })           
+    })
+}
+
+// Get receipt based on ticket number
+function getReceipt(ticketNumber, username) {
+    return new Promise((resolve, reject) => {
+        // Select last created receipt for the current user based on the ticket number
+        connection.query('SELECT * FROM receipts WHERE ticketNumber = ? AND username ORDER BY id Desc LIMIT 1', [ticketNumber, username], function(err, result) {
+            if (err) {
+                reject('Error: ' + err.message)
+            } else {
+                if (result.length == 1) {
+                    resolve(result)
+                } else {
+                    resolve('Database Error')
+                }
+            }
+        })
+    })
+}
+
+// Get the last receipt created
+function getLastReceipt(username) {
+    return new Promise((resolve, reject) => {
+        // Select last created receipt for the current user 
+        connection.query('SELECT * FROM receipts WHERE username = ? ORDER BY id Desc LIMIT 1', [username], function(err, result) {
+            if (err) {
+                reject('Error: ' + err.message)
+            } else {
+                if (result.length == 1) {
+                    resolve(result[0])
+                } else {
+                    resolve('Database Error')
+                }
+            }
+        })
+    })
+}
+
+// connection.end();
+
+module.exports.login = login
+module.exports.insertUser = insertUser
+module.exports.createTicket = createTicket
+module.exports.createSpecialTicket = createSpecialTicket
+module.exports.getTicket = getTicket
+module.exports.createTicketType = createTicketType
+module.exports.retrieveTicketTypeInfo = retrieveTicketTypeInfo
+module.exports.createReceipt = createReceipt
+module.exports.createLostTicketReceipt = createLostTicketReceipt
+module.exports.getLastReceipt = getLastReceipt

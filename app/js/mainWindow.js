@@ -15,7 +15,7 @@ document.querySelector('#btnGenerateTicket').addEventListener('click', async () 
     let ticket = await dbconnection.createTicket(userInfo.username, 'hourly')
     if (ticket.ticketNumber) {
         //Pop up dialog box displaying ticket number
-        ipcRenderer.send('send:ticket', ticket)
+        ipcRenderer.send('send:ticket', ticket, 'mainWindow')
         // Placeholder for print function or code
         console.log('This is where we print the ticket# ' + ticket.ticketNumber)
     } else {
@@ -25,7 +25,7 @@ document.querySelector('#btnGenerateTicket').addEventListener('click', async () 
 
 //Listen for Pay Ticket Button and close ticket after payment (How to handle Bar Code Scanner?)
 document.querySelector('#btnPayTicket').addEventListener('click', () => {
-    ipcRenderer.send('send:pay')
+    ipcRenderer.send('send:pay', userInfo)
 })
 
 //Listen for Lost Ticket Button

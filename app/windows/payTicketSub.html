@@ -28,8 +28,18 @@
               <p class="card-text" id="duration">Duration: </p>
               <p class="card-text" id="tType">Ticket Type: </p>
               <p class="card-text" id="tCost">Cost: </p>
-              <button class="btn btn-primary" id="btnPayTicket">Pay Ticket</button>
+              <!-- <button class="btn btn-primary" id="btnPayTicket">Pay Ticket</button> -->
             </div>
+            <div id="collectpayment" class="card-body text-center">
+              <label for="paymentMethod">Select Payment Method</label>
+              <select class="form-control" name="" id="paymentMethod">
+                <option value="cash">Cash</option>
+                <option value="cheque">Check</option>
+              </select>
+              <input type="text" class="form-control" id="txtAmountPaid" placeholder="Enter Payment Amount" required autofocus>
+              <button class="btn btn-primary" id="btnPayTicket">Pay Ticket</button>
+              <p class="card-text" id="paymentReturn"></p>
+          </div>
           </div>
 
     </div>

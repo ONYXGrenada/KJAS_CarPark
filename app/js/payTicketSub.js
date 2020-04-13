@@ -1,7 +1,12 @@
 const {ipcRenderer} = require('electron')
-
 const connection = require('../../app/js/dbconnection')
 
+let userInfo
+
+// Get the user on window creation
+ipcRenderer.on('send:user', (event, user) => {
+    userInfo = user
+})
 
 //Listen for Ticket Number
 document.querySelector('#txtTicketNumber').addEventListener('keyup', async (e) => {
@@ -9,12 +14,12 @@ document.querySelector('#txtTicketNumber').addEventListener('keyup', async (e) =
     console.log("e.keycode " + e.keyCode)
     if (e.keyCode == 13) {
         const ticketNumber = document.querySelector('#txtTicketNumber').value
-        let ticket = await connection.getTicket(ticketNumber)
+        let ticket = await connection.getTicket(ticketNumber, userInfo.username)
 
         if (ticket.id > 0) {
             document.querySelector('#customerTicket').removeAttribute('hidden')
             //document.querySelector('#customerTicket').setAttribute("hidden", false)
-            ipcRenderer.send('window:resize', 500)
+            ipcRenderer.send('window:resize', 600)
         }
 
         else {

@@ -11,13 +11,21 @@
         <h1 class="h1 font-weight-normal">
             Lost Ticket
         </h1>
-        <br>
         The lost ticket charge is: $<a id="lostTicketFee"></a>
-        <br>
-        <button class="btn btn-info btn-block" id="btnGenerateTicket">Generate Ticket</button>
+        <br/>
+        <label for="paymentMethod">Select Payment Method</label>
+        <select class="form-control" id="txtPaymentMethod">
+            <option value="cash">Cash</option>
+            <option value="cheque">Cheque</option>
+        </select>
+        <input type="text" class="form-control" id="txtChequeNumber" placeholder="Enter Cheque Number" hidden>
+        <input type="text" class="form-control" id="txtPaymentAmount" placeholder="Enter Payment Amount" required autofocus>
+        <button class="btn btn-info btn-block" id="btnPayTicket">Pay Ticket</button>
+        <p class="card-text" id="paymentReturn"></p>
     </div>
-    <script src="../../app/js/lostTicketSub.js"></script>
+    <!-- <script src="../../app/js/lostTicketSub.js"></script> -->
     <script>let $ = require('jquery');</script>
+    <script src="../../app/js/lostTicketSub.js"></script>
     <script>require('popper.js');</script>
     <script>require('bootstrap');</script>
 </body>
