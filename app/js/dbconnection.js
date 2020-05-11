@@ -2,8 +2,8 @@ const mysql = require('mysql');
 
 var connection = mysql.createConnection({
     host    : 'localhost',
-    user    : 'dbuser',
-    password: 'password',
+    user    : 'root',
+    password: '',
     database: 'carpark'
 });
 
@@ -18,7 +18,7 @@ connection.connect((err) => {
 // User login
 function login(username, password) {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT id, username, firstName, lastName FROM users WHERE username = ? AND password = ?', [username, password], function(err, result) {
+        connection.query('SELECT id, username, firstName, lastName, status FROM users WHERE username = ? AND password = ?', [username, encryptPassword(password)], function(err, result) {
             if (err) {
                 reject('Error: ' + err.message)
                 console.log('Error encountered')
@@ -40,9 +40,45 @@ function login(username, password) {
         })        
     })
 }
+function checkUser(username) {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT username FROM users WHERE username = ?', [username], function(err, result) {
+            if (err) {
+                reject('Error: ' + err.message)
+                console.log('Error encountered')
+            } else if (result.length == 0) {
+                console.log('user does not exist in database. OK to create. ')
+                //resolve('member not found')
+                resolve(true)
+                // encryptPassword(username)
+
+
+            } else {
+                if (result.length > 0) {
+                    console.log('Username not available')
+                    // resolve(result[0])
+                    resolve(false)
+                    // alert("This username (" + username + ") is already taken. Please try another.")
+
+
+                }
+            }
+        })
+    })
+}
+
+function encryptPassword(password){
+    var salt = '@lT4-'
+    var crypto = require('crypto')
+    var saltedPassword = salt + password
+
+    var encryptedPassword = crypto.createHash('md5').update(saltedPassword).digest('hex')
+    console.log(encryptedPassword);
+    return encryptedPassword
+}
 
 // Insert User
-function insertUser(username, password, firstName, lastName) {
+function insertUser(username, password, firstName, lastName, userType) {
     return new Promise((resolve, reject) => {
         console.log('Insert User Function')
         connection.query('SELECT username FROM users WHERE username = ?', [username], function(err, result) {
@@ -52,12 +88,35 @@ function insertUser(username, password, firstName, lastName) {
                 console.log('User already in table.')
                 resolve(0)
             } else {
-                connection.query('INSERT INTO users (username, password, firstName, lastName) VALUES (?,?,?,?)', [username, password, firstName, lastName]);
+                connection.query('INSERT INTO users (username, password, firstName, lastName, userType) VALUES (?,?,?,?,?)', [username, encryptPassword(password), firstName, lastName, userType]);
                 resolve(1)
             }
         })
     })
 }
+
+// (De)activate User
+function activateUser(username, action) {
+    return new Promise((resolve, reject) => {
+        console.log('Activate/Deactivate User Function')
+        let sql = ''
+        if(action == 'Activate'){
+            sql = 'UPDATE users SET status = 1  WHERE username = ?'
+        }
+        else if (action == 'Deactivate'){
+            sql = 'UPDATE users SET status = 3  WHERE username = ?'
+        }
+        connection.query(sql, [username], function(err, result) {
+            if (err) {
+                reject('Error: ' + result.message)
+            }  else {
+                resolve(1)
+            }
+        })
+    })
+}
+
+
 
 // Create Ticket function to generate ticket in the ticket table
 function createTicket(username, ticketType) {
@@ -110,6 +169,56 @@ function createTicket(username, ticketType) {
 }
 
 // Create Ticket function to generate special ticket in the special ticket table
+//Create Monthly Ticket function to generate ticket in the ticket table
+function createMonthlyTicket(username, ticketType, registrationNumber) {
+    return new Promise((resolve, reject) => {
+        //Checks to see if ticket type exists
+        connection.query('SELECT id, unitCost, displayName FROM ticketType WHERE id = ? AND status = ? ORDER BY id Desc LIMIT 1', [ticketType, 'active'], function(err, result) {
+            if (err) {
+                reject('Ticket Type not found - Error: ' + result.message)
+            }
+            if (result.length > 0){
+                connection.query('INSERT INTO tickets (ticketType, description, status, username, noOfVisits) VALUES (?,?,?,?,?)', [ticketType, result[0].displayName, 'open', username, 0], function(err) {
+                    if (err) {
+                        reject('Error: ' + err.message)
+                    } else {
+                        //Select last created ticket for the current user
+                        connection.query('SELECT id, noOfVisits FROM tickets WHERE username = ? ORDER BY id Desc LIMIT 1', [username], function(err, result) {
+                            if (err) {
+                                reject('Error: ' + err.message)
+                            } else {
+                                if (result) {
+                                    //Create ticket number for last created ticket
+                                    connection.query('UPDATE tickets SET ticketNumber = ?, noOfVisits = ? WHERE id = ?', [registrationNumber, parseInt(result[0].noOfVisits)+1, result[0].id], function(err) {
+                                        if (err) {
+                                            reject('Error: ' + err.message)
+                                        }
+                                        else {
+                                            //Return last created ticket number to main program
+                                            connection.query('SELECT ticketNumber, createdDate, description FROM tickets WHERE username = ? ORDER BY id Desc LIMIT 1', [username], function(err, result) {
+                                                if (err) {
+                                                    reject('Error: ' + err.message)
+                                                } else {
+                                                    if (result.length == 1) {
+                                                        resolve(result[0])
+                                                    } else {
+                                                        resolve('Database Error')
+                                                    }
+                                                }
+                                            })
+                                        }
+                                    })
+                                } else {
+                                    resolve('Database Error')
+                                }
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    })
+}
 function createSpecialTicket(username, ticketType, vehicleRegistration, startDate, endDate) {
     return new Promise((resolve, reject) => {
         // Checks to see if ticket type exists 
@@ -322,6 +431,7 @@ function getLastReceipt(username) {
 module.exports.login = login
 module.exports.insertUser = insertUser
 module.exports.createTicket = createTicket
+module.exports.createMonthlyTicket = createMonthlyTicket
 module.exports.createSpecialTicket = createSpecialTicket
 module.exports.getTicket = getTicket
 module.exports.createTicketType = createTicketType
@@ -329,3 +439,6 @@ module.exports.retrieveTicketTypeInfo = retrieveTicketTypeInfo
 module.exports.createReceipt = createReceipt
 module.exports.createLostTicketReceipt = createLostTicketReceipt
 module.exports.getLastReceipt = getLastReceipt
+module.exports.checkUser = checkUser
+module.exports.encryptPassword = encryptPassword
+module.exports.activateUser = activateUser

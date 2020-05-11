@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+
+        /* The message box is shown when the user clicks on the password field */
+        #message {
+            display:none;
+            background: #f1f1f1;
+            color: #000;
+            position: relative;
+            padding: 20px;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        #message p {
+            padding: 0px 15px;
+            font-size: 12px;
+        }
+
+        #message h3 {
+            font-size: 14px;
+            display: none;
+        }
+
+        /* Add a green text color and a checkmark when the requirements are right */
+        .valid {
+            color: green;
+        }
+
+        .valid:before {
+            position: relative;
+            left: -15px;
+            content: "✔";
+        }
+
+        /* Add a red text color and an "x" when the requirements are wrong */
+        .invalid {
+            color: red;
+        }
+
+        .invalid:before {
+            position: relative;
+            left: -15px;
+            content: "✖";
+        }
+
+        .confirmed {
+            border: solid 1px #0f0;
+        }
+
+        .unconfirmed {
+            border: solid 1px #F00;
+        }
+        #successMessage{
+            display: none;
+        }
+    </style>
+    <title>Create Account</title>
+</head>
+<body>
+    <div class="container text-center">
+        <br/>
+        <form class="form-signin">
+            <h1 class="h1 font-weight-normal">Create Account</h1>
+            <label for="ddlAccountType" class="sr-only">accountType</label>
+            <select type="text" class="form-control" id="ddlAccountType" placeholder="Account Type" required autofocus>
+                <option disabled selected="selected">Account Type</option>
+                <option disabled>Administrator</option>
+                <option>Attendant</option>
+                <option>Supervisor</option>
+            </select>
+            <label for="txtFirstName" class="sr-only">firstname</label>
+            <input type="text" class="form-control" id="txtFirstName" placeholder="First Name" required autofocus>
+            <label for="txtLastName" class="sr-only">lastname</label>
+            <input type="text" class="form-control" id="txtLastName" placeholder="Last Name" required autofocus>
+            <label for="txtUser" class="sr-only">username</label>
+            <input type="text" class="form-control" id="txtUser" placeholder="Username" required autofocus>
+            <label for="txtPassword" class="sr-only">password</label>
+            <input type="password" class="form-control" id="txtPassword" placeholder="Password" required>
+            <label for="txtConfirmPassword" class="sr-only">password</label>
+            <input type="password" class="form-control" id="txtConfirmPassword" placeholder="Confirm Password" required>
+            <div>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block mt-3" id="btnLogin" type="submit">Create Account</button>
+            <div id="message">
+                <h3>Password must contain the following:</h3>
+                <p id="available" class="invalid" style="display: none;">Username is unavailable</p>
+                <p id="letter" class="invalid">Password must contain a <b>lowercase</b> letter</p>
+                <p id="capital" class="invalid">Password must contain an <b>uppercase</b> letter</p>
+                <p id="number" class="invalid">Password must contain a <b>number</b></p>
+                <p id="length" class="invalid">Password must contain a minimum <b>8 characters</b></p>
+                <p id="passMatch" class="invalid">Password and confirmation must match</p>
+            </div>
+        </form>
+        <div id="successMessage">
+            <h3>Action Successful</h3>
+            <hr>
+            <p>The user has been successfully added.</p>
+        </div>
+    </div>
+    <script src="../../app/js/signUpWindow.js"></script>
+    <script>let $ = require('jquery');</script>
+    <script>require('popper.js');</script>
+    <script>require('bootstrap');</script>
+    <script>
+        var myInput = document.getElementById("txtPassword");
+        var confirm = document.getElementById("txtConfirmPassword");
+        var letter = document.getElementById("letter");
+        var capital = document.getElementById("capital");
+        var number = document.getElementById("number");
+        var length = document.getElementById("length");
+        var passConfirm = document.getElementById("passMatch");
+
+
+        // When the user clicks on the password field, show the message box
+        myInput.onfocus = function() {
+            document.getElementById("message").style.display = "block";
+        }
+        confirm.onfocus = function() {
+            document.getElementById("message").style.display = "block";
+        }
+
+        // When the user clicks outside of the password field, hide the message box
+        myInput.onblur = function() {
+            document.getElementById("message").style.display = "none";
+        }
+        confirm.onblur = function() {
+            document.getElementById("message").style.display = "none";
+        }
+
+        // When the user starts to type something inside the password field
+        myInput.onkeyup = function() {
+            // Validate lowercase letters
+            var lowerCaseLetters = /[a-z]/g;
+            if(myInput.value.match(lowerCaseLetters)) {
+                letter.classList.remove("invalid");
+                letter.classList.add("valid");
+            } else {
+                letter.classList.remove("valid");
+                letter.classList.add("invalid");
+            }
+
+            // Validate capital letters
+            var upperCaseLetters = /[A-Z]/g;
+            if(myInput.value.match(upperCaseLetters)) {
+                capital.classList.remove("invalid");
+                capital.classList.add("valid");
+            } else {
+                capital.classList.remove("valid");
+                capital.classList.add("invalid");
+            }
+
+            // Validate numbers
+            var numbers = /[0-9]/g;
+            if(myInput.value.match(numbers)) {
+                number.classList.remove("invalid");
+                number.classList.add("valid");
+            } else {
+                number.classList.remove("valid");
+                number.classList.add("invalid");
+            }
+
+            // Validate length
+            if(myInput.value.length >= 8) {
+                length.classList.remove("invalid");
+                length.classList.add("valid");
+            } else {
+                length.classList.remove("valid");
+                length.classList.add("invalid");
+            }
+
+
+        }
+
+        confirm.onkeyup = function () {
+             // alert(confirm.value + " : " + myInput.value);
+            // Validate password confirmation
+
+            if(confirm.value == myInput.value)
+            {
+                passConfirm.classList.remove("invalid");
+                passConfirm.classList.add("valid");
+            }
+            else
+            {
+                passConfirm.classList.remove("valid");
+                passConfirm.classList.add("invalid");
+            }
+
+        }
+    </script>
+</body>
+</html>

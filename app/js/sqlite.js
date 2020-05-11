@@ -19,7 +19,7 @@ const createUserTable = () => {
 //Insert Admin User
 const insertAdminUser = () => {
     console.log('Insert the default Administrator User')
-    db.run('INSERT INTO users (username, password, firstName, lastName, userType) VALUES (?,?,?,?,?)', ['admin','admin','Admin','User','admin']);
+    db.run('INSERT INTO users (username, password, firstName, lastName, userType) VALUES (?,?,?,?,?)', ['admin','8ca06116ebab2d7265209e34aa0047e1','Admin','User','admin']);
 }
 
 //Insert Test User

@@ -39,6 +39,34 @@ function createMainWindow() {
     Menu.setApplicationMenu(mainMenu);
 }
 
+//Create adminWindow
+function createAdminWindow() {
+    adminWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true
+        },
+        show: false
+    });
+
+    adminWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'app/windows/adminWindow.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+
+    // Open the DevTools
+    // mainWindow.webContents.openDevTools()
+
+    adminWindow.on('closed', () => {
+        app.quit();
+    })
+
+    // Build menu from template
+    const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
+    // Insert menu
+    Menu.setApplicationMenu(mainMenu);
+}
+
 // Create loginWindow
 function createLoginWindow() {
     loginWindow = new BrowserWindow({
@@ -132,6 +160,30 @@ function createPayTicketSub() {
     })
 }
 
+// Create Sign Up Sub
+function createSignUpSub() {
+    signSub = new BrowserWindow({
+        parent: mainWindow,
+        width: 400,
+        height: 700,
+        webPreferences: {
+            nodeIntegration: true
+        }
+    });
+    signSub.setMenuBarVisibility(true)
+    // Load html into window
+    signSub.loadURL(url.format({
+        pathname: path.join(__dirname, 'app/windows/signUpWindow.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+
+    // Quit app when payTicketSub closed
+    signSub.on('closed', () => {
+        signSub = null
+    })
+}
+
 // Create Lost Ticket Sub
 function createLostTicketSub() {
     lostTicketSub = new BrowserWindow({
@@ -159,13 +211,17 @@ function createLostTicketSub() {
 // Initialize application
 app.on('ready', () => {
     createMainWindow()
+    createAdminWindow()
     createLoginWindow()
 
     // Get login confirmation
     ipcMain.on('login:successful', (event, user) => {
         mainWindow.show()
         mainWindow.webContents.send('send:user', user)
+        adminWindow.show()
+        adminWindow.webContents.send('send:user', user)
         loginWindow.close()
+
     })
 
     // Get failed login
@@ -218,6 +274,15 @@ app.on('ready', () => {
         payTicketSub.webContents.once('did-finish-load', () => {
             payTicketSub.webContents.send('send:user', user)
         })
+    })
+
+    // Sign Up Window Trigger
+    ipcMain.on('send:signup', (event, user) => {
+        createSignUpSub()
+        // Need to wait for the window to load before sending the user
+       /* payTicketSub.webContents.once('did-finish-load', () => {
+            payTicketSub.webContents.send('send:user', user)
+        })*/
     })
 
     // Lost Ticket Window Trigger

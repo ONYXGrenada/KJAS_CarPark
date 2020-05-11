@@ -1,0 +1,29 @@
+======== USERS ===============
+
+A status field should be added for user activation and deactivation.
+Possible statuses
+0 - New user (needs supervisor activation to start using the system)
+1 - Active user
+3 - Deactivated user (user that no longer  has authorization to use the system)
+
+                ###### ADDING A NEW USER ##############
+    1. Any employee may create an account and go through the validation process
+    2. After the employee creates the account, the record is added to the user table in the database
+    3. The authorised flag in the database will be set to false (0)
+    4. A supervisor will be notified of the added account for review
+    5. Only after the account has been authorised, will the user be allowed to log in
+
+            NB: Similarly a supervisor may deauthorise a user account at any time to prevent log in.
+
+
+
+======= ADMIN PORTAL ==============
+
+The admin portal should feature the following functions:
+
+1. Activate/Deactivate user accounts
+2. Add new users
+    - Manually add a single user
+    - Import multiple users using a CSV file
+3. Reset users passwords
+4. Access reports

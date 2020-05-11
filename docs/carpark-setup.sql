@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS `users` (
     `salt` VARCHAR(25), 
     `firstName` VARCHAR(25), 
     `lastname` VARCHAR(25), 
-    `userType` VARCHAR(25), 
+    `userType` VARCHAR(25),
+    `status` varchar(3) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '0',
     `lastLogin` DATETIME, 
     PRIMARY KEY (`id`) );
 
@@ -78,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `ticketType` (
     PRIMARY KEY(`id`) );
 
 -- Insert default data into tables
-INSERT INTO `users` ( `username`, `password`, `firstName`, `lastName` ) VALUES ( 'admin', 'admin', 'Admin', 'User' );
+INSERT INTO `users` ( `username`, `password`, `firstName`, `lastName` ) VALUES ( 'admin', '8ca06116ebab2d7265209e34aa0047e1', 'Admin', 'User' );
 INSERT INTO `ticketType` ( `ticketType`, `unitCost`, `status`, `displayName`, `description`, `username` ) VALUES 
     ('hourly', 2.00, 'active', 'Hourly', 'Ticket for regular hourly usage.', 'admin'),
     ('lost', 25.00, 'active', 'Lost Ticket', 'Lost ticket type.', 'admin');

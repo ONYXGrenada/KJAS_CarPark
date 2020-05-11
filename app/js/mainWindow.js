@@ -36,3 +36,9 @@ document.querySelector('#btnPayTicket').addEventListener('click', () => {
 document.querySelector('#btnLostTicket').addEventListener('click', () => {
     ipcRenderer.send('send:lost', userInfo)
 })
+//Listen for Sign Up Button
+document.querySelector('#btnSignUp').addEventListener('click', () => {
+
+    ipcRenderer.send('send:signup')
+})
+

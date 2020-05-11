@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <title>Dashboard</title>
+    <style>
+        #activationForm{
+            position: relative;
+            background-color: #fff;
+            box-shadow: 5px 5px 15px #777;
+            padding: 20px;
+            width: 450px;
+            height: 250px;
+            border: solid 1px #bbb;
+            margin: 20px auto;
+
+        }
+        #btnGroup{
+            margin: 0 auto !important;
+            width: 60%;
+        }
+        #admincover{
+
+            WIDTH: 100%;
+            background-color: rgb(0, 0, 0, 0.65);
+            height: 100%;
+            z-index: 10;
+            position: fixed;
+            top: 0;
+            left: auto;
+            bottom: 0;
+            padding: auto;
+            display: none;
+
+        }
+        #btnProceed{
+            display: none;
+        }
+
+
+    </style>
+</head>
+<body>
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading font-weight-bold">Car Park System</h1>
+            <p class="lead" id="welcome"></p>
+        </div>
+    </section>
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <h4 class="font-weight-normal">Admin Panel</h4>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-info btn-block" id="btnUserActivation">Activate / Deactivate User</button>
+                        <button class="btn btn-success btn-block" id="btnPayTicket">Car Park</button>
+                        <button class="btn btn-danger btn-block" id="btnLostTicket">Add New User</button>
+                        <button class="btn btn-danger btn-block" id="btnOtherTicket">Reset User Password</button>
+                        <button class="btn btn-danger btn-block" id="btnSignUp">Reports</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+            </div>
+            <div id="admincover">
+                <div id="activationForm">
+                    <form class="form-signin">
+                        <h3 class="h3 font-weight-normal">Activate/Deactivate User Account</h3>
+                        <label for="ddlActionType" class="sr-only">accountType</label>
+                        <select type="text" class="form-control" id="ddlActionType" placeholder="Action Type" required autofocus>
+                            <option disabled selected="selected">Select to activate or deactivate a user</option>
+                            <option>Activate User Account</option>
+                            <option>Deactivate User Account</option>
+                            <!--                        <option>Supervisor</option>-->
+                        </select>
+                        <label for="txtUserName" class="sr-only">username</label>
+                        <input type="text" class="form-control" id="txtUserName" placeholder="User Name" required autofocus>
+                        <div id="btnGroup">
+                            <button disabled class="btn btn-lg btn-primary mt-3" id="btnProceed" type="submit">Proceed</button>
+                            <button class="btn btn-lg btn-primary mt-3" id="btnCancel" type="button">Cancel</button>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>let $ = require('jquery');</script>
+    <script src='../../app/js/adminWindow.js'></script>
+    <script>require('popper.js');</script>
+    <script>require('bootstrap');</script>
+</body>
+</html>
