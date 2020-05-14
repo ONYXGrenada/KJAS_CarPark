@@ -1,0 +1,27 @@
+version: '3'
+services:
+  mysqlcontainer:
+    image: mysql
+    container_name: cpm-mysql
+    ports:
+      - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password 
+    # command: --init-file /data/application/carpark-setup.sql
+    volumes:
+      - ./docs/carpark-setup.sql:/docker-entrypoint-initdb.d/carpark-setup.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=carpark
+      - MYSQL_USER=dbuser
+      - MYSQL_PASSWORD=password
+  devcontainer:
+    container_name: cpm-dev
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    volumes:
+      - .:/workspace:cached
+    build:
+      context: ./.devcontainer
+    environment:
+      - DISPLAY=$DISPLAY
+    network_mode: "host"
+  

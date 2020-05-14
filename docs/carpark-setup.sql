@@ -4,6 +4,9 @@
 -- CREATE DATABASE carpark;
 -- GRANT ALL PRIVILEGES ON carpark.* TO 'admin'@'localhost' IDENTIFIED BY 'Pa$$word1';
 
+-- CREATE USER IF NOT EXISTS 'dbuser'@'%' IDENTIFIED WITH mysql_native_password BY 'password';
+-- GRANT ALL PRIVILEGES ON carpark.* to 'dbuser'@'%';FLUSH PRIVILEGES;
+
 USE carpark;
 
 -- Create tables
@@ -51,7 +54,6 @@ CREATE TABLE IF NOT EXISTS `specialTickets` (
 
 CREATE TABLE IF NOT EXISTS `receipts` (
     `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-    `receiptNumber` VARCHAR(25), --New addition to handle receipts without tickets (Lost tickets) 
     `ticketNumber` VARCHAR(25), 
     `ticketType` VARCHAR(25),
     `createdDate` DATETIME DEFAULT CURRENT_TIMESTAMP, 

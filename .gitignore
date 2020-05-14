@@ -16,3 +16,6 @@ package-lock.json
 #IDE Files
 .vscode/
 .idea/
+
+#docker container
+# .devcontainer/
