@@ -9,6 +9,7 @@
   "dependencies": {
     "bootstrap": "^4.5.0",
     "electron": "^7.2.1",
+    "get-docker-host": "^1.0.3",
     "jquery": "^3.5.0",
     "mysql": "^2.18.1",
     "popper.js": "^1.16.1"

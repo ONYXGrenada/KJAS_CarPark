@@ -1,31 +1,30 @@
 // For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.117.1/containers/javascript-node-14
 {
-	"name": "CPM Dev Container",
-	"dockerComposeFile": "../docker-compose.yml",
-	// "dockerFile": "Dockerfile",
-	"service": "devcontainer",
+  "name": "CPM Dev Container",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "devcontainer",
 
-	// Set *default* container specific settings.json values on container create.
-	"settings": { 
-		"terminal.integrated.shell.linux": "/bin/bash"
-	},
+  // Set *default* container specific settings.json values on container create.
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash",
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
 
-	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": [
-		"dbaeumer.vscode-eslint"
-	],
-	
-	// "mounts": ["source=${localWorkpsaceFolder},target=${containerWorkspaceFolder},type=volume"],
+  // Add the IDs of extensions you want installed when the container is created.
+  "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"],
 
-	"workspaceFolder": "/workspace",
+  // "mounts": ["source=${localWorkpsaceFolder},target=${containerWorkspaceFolder},type=volume"],
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+  "workspaceFolder": "/workspace",
 
-	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "npm install",
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
 
-	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
-	// "remoteUser": "node"
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "npm install"
+
+  // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
+  // "remoteUser": "node"
 }

@@ -10,8 +10,14 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Install the required packages
 RUN apt update
-RUN apt install -y nodejs npm git libnss3 libgconf-2-4 libgtk-3-0 libasound2 libxss1
+RUN apt install -y nodejs npm git libnss3 libgconf-2-4 libgtk-3-0 libasound2 libxss1 iproute2
 # libxtst-dev libxss1 libgconf2-dev libgtkextra-dev
+
+# WORKDIR /workspace
+# COPY ../docs/entrypoint.sh /entrypoint.sh
+# RUN chmod +x /entrypoint.sh
+
+# ENTRYPOINT ["/entrypoint.sh"]
 
 # ** [Optional] Uncomment this section to install additional packages. **
 #
