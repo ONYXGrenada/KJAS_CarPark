@@ -2,7 +2,7 @@
 
 Generic Software to Manage Car Parks. This is in development stages.
 
-## Installation
+## Development Method 1: Traditional Installation
 
 **Clone Repository:**
 
@@ -21,11 +21,11 @@ npm install --save popper.js
 npm install --save bootstrap
 ```
 
-## Start Docker Container
+**Start Docker Container**
 
 Read docker-MySQL.txt in the docs folder
 
-## Using Visual Studio Code with Docker Integration
+## Development Method 2: Using Visual Studio Code with Docker Integration
 
 **Prerequisites:**
 
