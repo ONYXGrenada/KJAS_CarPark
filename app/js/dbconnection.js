@@ -305,6 +305,7 @@ function retrieveTicketTypeInfo(ticketType) {
 
 // Create the Receipt
 function createReceipt(
+  ticketType,
   ticketNumber,
   ticketStatus,
   ticketCost,
@@ -335,10 +336,10 @@ function createReceipt(
                   reject("Cannot create receipt - Error: " + err.message);
                 } else {
                   connection.query(
-                    "INSERT INTO receipts (ticketNumber, ticketType, status, ticketCost, amountPaid, balance, amountDue, paymentMethod, chequeNumber, username) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                    "INSERT INTO receipts (ticketNumber, ticketType, status, ticketCost, amountPaid, balance, amountDue, paymentMethod, chequeNumber, username) VALUES (?,?,?,?,?,?,?,?,?,?)",
                     [
                       ticketNumber,
-                      result[0].ticketType,
+                      ticketType,
                       receiptStatus,
                       ticketCost,
                       amountPaid,

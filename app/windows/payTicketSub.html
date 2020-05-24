@@ -1,51 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+    />
+    <link
+      rel="stylesheet"
+      href="../../node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
     <title>Pay Ticket</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <br/>
-        <!-- <form class="form-payTicket"> -->
-            <!-- <h1 class="h1 font-weight-normal">Enter Ticket Number</h1> -->
-            <input type="text" class="form-control" id="txtTicketNumber" placeholder="Enter Ticket Number" required autofocus>
-            <div>
-            </div>
-            <!-- <button class="btn btn-lg btn-primary btn-block mt-3" id="btnPayTicket" type="submit">Pay</button> -->
-        <!-- </form> -->
-        <br />
-        <div class="card" id="customerTicket" hidden>
-            <div class="card-header">
-              Ticket
-            </div>
-            <div class="card-body">
-              <!-- <h5 class="card-title">Special title treatment</h5> -->
-              <p class="card-text" id="sTime">Enter Time: </p>
-              <p class="card-text" id="eTime">Exit Time: </p>
-              <p class="card-text" id="duration">Duration: </p>
-              <p class="card-text" id="tType">Ticket Type: </p>
-              <p class="card-text" id="tCost">Cost: </p>
-              <!-- <button class="btn btn-primary" id="btnPayTicket">Pay Ticket</button> -->
-            </div>
-            <div id="collectpayment" class="card-body text-center">
-              <label for="paymentMethod">Select Payment Method</label>
-              <select class="form-control" name="" id="paymentMethod">
-                <option value="cash">Cash</option>
-                <option value="cheque">Check</option>
-              </select>
-              <input type="text" class="form-control" id="txtAmountPaid" placeholder="Enter Payment Amount" required autofocus>
-              <button class="btn btn-primary" id="btnPayTicket">Pay Ticket</button>
-              <p class="card-text" id="paymentReturn"></p>
-          </div>
-          </div>
-
+      <br />
+      <!-- <form class="form-payTicket"> -->
+      <!-- <h1 class="h1 font-weight-normal">Enter Ticket Number</h1> -->
+      <input
+        type="text"
+        class="form-control"
+        id="txtTicketNumber"
+        placeholder="Enter Ticket Number"
+        required
+        autofocus
+      />
+      <div></div>
+      <!-- <button class="btn btn-lg btn-primary btn-block mt-3" id="btnPayTicket" type="submit">Pay</button> -->
+      <!-- </form> -->
+      <br />
+      <div class="card" id="customerTicket" hidden>
+        <div class="card-header">
+          Ticket
+        </div>
+        <div class="card-body">
+          <!-- <h5 class="card-title">Special title treatment</h5> -->
+          <p class="card-text" id="sTime">Enter Time:</p>
+          <p class="card-text" id="eTime">Exit Time:</p>
+          <p class="card-text" id="duration">Duration:</p>
+          <p class="card-text" id="tType">Ticket Type:</p>
+          <p class="card-text" id="tCost">Cost:</p>
+          <!-- <button class="btn btn-primary" id="btnPayTicket">Pay Ticket</button> -->
+        </div>
+        <div id="collectPayment" class="card-body text-center">
+          <label for="txtPaymentMethod">Select Payment Method</label>
+          <select class="form-control" name="" id="txtPaymentMethod">
+            <option value="cash">Cash</option>
+            <option value="cheque">Check</option>
+          </select>
+          <input
+            type="number"
+            class="form-control"
+            id="txtChequeNumber"
+            placeholder="Enter Cheque Number"
+            hidden
+          />
+          <input
+            type="number"
+            class="form-control"
+            id="txtPaymentAmount"
+            placeholder="Enter Payment Amount"
+            required
+            autofocus
+          />
+          <button class="btn btn-primary" id="btnPayTicket">Pay Ticket</button>
+          <p class="card-text" id="txtPaymentReturn"></p>
+        </div>
+      </div>
     </div>
-    <script>let $ = require('jquery');</script>
+    <script>
+      let $ = require("jquery");
+    </script>
     <script src="../../app/js/payTicketSub.js"></script>
-    <script>require('popper.js');</script>
-    <script>require('bootstrap');</script>
-</body>
+    <script>
+      require("popper.js");
+    </script>
+    <script>
+      require("bootstrap");
+    </script>
+  </body>
 </html>
