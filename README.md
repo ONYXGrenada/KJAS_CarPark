@@ -44,7 +44,7 @@ git clone https://github.com/ONYXGrenada/CarParkManager.git
 
 - Launch vscode and open project directory
 - Ctrl+Shift+P and type "Open Folder in Container" and hit Return or Enter. (Containers should be built for project)
-- Initialize X Server (For Windows Only). In vscode terminal type:
+- Initialize X Server (For Windows Only). In vscode terminal type (replace "your ip" with your actual ip):
   ```bash
   export DISPLAY:{your ip}:0
   ```
