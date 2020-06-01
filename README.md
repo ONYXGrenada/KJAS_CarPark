@@ -44,7 +44,7 @@ git clone https://github.com/ONYXGrenada/CarParkManager.git
 
 - Launch vscode and open project directory
 - Ctrl+Shift+P and type "Open Folder in Container" and hit Return or Enter. (Containers should be built for project)
-- Allow X11 Forwarding (Linux Only). In your local linux terminal type (may not be most secure. remove after.):
+- Allow X11 Forwarding (Linux Only). In your local linux terminal type (may not be most secure. remove after.):  
   Before:
   ```bash
   xhost +local:
