@@ -7,7 +7,7 @@ services:
       - "3306:3306"
     command: --default-authentication-plugin=mysql_native_password
     volumes:
-      - ./docs/carpark-setup.sql:/docker-entrypoint-initdb.d/carpark-setup.sql
+      - ../docs/carpark-setup.sql:/docker-entrypoint-initdb.d/carpark-setup.sql
     environment:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=carpark
@@ -17,9 +17,9 @@ services:
     container_name: cpm-dev
     command: /bin/sh -c "while sleep 1000; do :; done"
     volumes:
-      - .:/workspace:cached
+      - ..:/workspace:cached
     build:
-      context: ./.devcontainer
+      context: .
     environment:
       - DISPLAY=$DISPLAY
     network_mode: "host"

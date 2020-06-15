@@ -8,9 +8,12 @@
 FROM ubuntu:latest
 ENV DEBIAN_FRONTEND=noninteractive
 
+ARG UPGRADE_PACKAGES="true"
+
 # Install the required packages
-RUN apt update
-RUN apt install -y nodejs npm git libnss3 libgconf-2-4 libgtk-3-0 libasound2 libxss1 iproute2
+RUN apt update \
+    && apt install -y nodejs npm git libnss3 libgconf-2-4 libgtk-3-0 libasound2 libxss1 iproute2 \
+    && npm install
 # libxtst-dev libxss1 libgconf2-dev libgtkextra-dev
 
 # WORKDIR /workspace

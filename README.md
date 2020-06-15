@@ -55,7 +55,7 @@ git clone https://github.com/ONYXGrenada/CarParkManager.git
   ```
 - Initialize X Server (For Windows Only). In vscode terminal type (replace "your ip" with your actual ip):
   ```bash
-  export DISPLAY:{your ip}:0
+  export DISPLAY={your ip}:0
   ```
 
 ## Start Application
