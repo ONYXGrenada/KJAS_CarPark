@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "bootstrap": "^4.6.0",
-    "electron": "^7.3.3",
+    "electron": ">=9.4.0",
     "get-docker-host": "^1.0.3",
     "jquery": "^3.6.0",
     "mysql": "^2.18.1",
