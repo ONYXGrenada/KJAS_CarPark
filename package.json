@@ -1,16 +1,16 @@
 {
   "name": "carparkmanager",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Generic Software to Manage Car Parks. This is in development stages.",
   "main": "main.js",
   "directories": {
     "doc": "docs"
   },
   "dependencies": {
-    "bootstrap": "^4.5.0",
-    "electron": "^7.2.1",
+    "bootstrap": "^4.6.0",
+    "electron": "^7.3.3",
     "get-docker-host": "^1.0.3",
-    "jquery": "^3.5.0",
+    "jquery": "^3.6.0",
     "mysql": "^2.18.1",
     "popper.js": "^1.16.1"
   },

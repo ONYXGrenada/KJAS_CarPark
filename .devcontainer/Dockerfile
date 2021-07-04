@@ -1,36 +1,26 @@
-#-------------------------------------------------------------------------------------------------------------
-# Copyright (c) Microsoft Corporation. All rights reserved.
-# Licensed under the MIT License. See https://go.microsoft.com/fwlink/?linkid=2090316 for license information.
-#-------------------------------------------------------------------------------------------------------------
+# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.183.0/containers/javascript-node/.devcontainer/base.Dockerfile
 
-# To fully customize the contents of this image, use the following Dockerfile instead:
+# [Choice] Node.js version: 16, 14, 12
+ARG VARIANT="16-buster"
+FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
 
-FROM ubuntu:latest
-ENV DEBIAN_FRONTEND=noninteractive
+# [Optional] Uncomment this section to install additional OS packages.
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get upgrade \
+    && apt-get -y install --no-install-recommends \
+    libnss3 \
+    libgconf-2-4 \
+    libgtk-3-0 \
+    libasound2 \
+    libxss1 \
+    iproute2 \
+    libx11-xcb-dev \
+    libxtst6
+    # && npm install
 
-ARG UPGRADE_PACKAGES="true"
+# [Optional] Uncomment if you want to install an additional version of node using nvm
+# ARG EXTRA_NODE_VERSION=10
+# RUN su node -c "source /usr/local/share/nvm/nvm.sh && nvm install ${EXTRA_NODE_VERSION}"
 
-# Install the required packages
-RUN apt update \
-    && apt install -y nodejs npm git libnss3 libgconf-2-4 libgtk-3-0 libasound2 libxss1 iproute2 \
-    && npm install
-# libxtst-dev libxss1 libgconf2-dev libgtkextra-dev
-
-# WORKDIR /workspace
-# COPY ../docs/entrypoint.sh /entrypoint.sh
-# RUN chmod +x /entrypoint.sh
-
-# ENTRYPOINT ["/entrypoint.sh"]
-
-# ** [Optional] Uncomment this section to install additional packages. **
-#
-# ENV DEBIAN_FRONTEND=noninteractive
-# RUN apt-get update \
-#    && apt-get -y install --no-install-recommends <your-package-list-here> \
-#    #
-#    # Clean up
-#    && apt-get autoremove -y \
-#    && apt-get clean -y \
-#    && rm -rf /var/lib/apt/lists/*
-# ENV DEBIAN_FRONTEND=dialog
-
+# [Optional] Uncomment if you want to install more global node modules
+# RUN su node -c "npm install -g <your-package-list-here>"
